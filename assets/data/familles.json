@@ -1,0 +1,228 @@
+{
+  "familles": [
+    {
+      "id": "fam_esther",
+      "nom": "Esther",
+      "descripteurs": [
+        { "id": "d_esther_1", "familleId": "fam_esther", "texte": "Le monarque qui organisa de somptueux banquets dans sa capitale", "reference": "Esther 1.3" },
+        { "id": "d_esther_2", "familleId": "fam_esther", "texte": "La reine d'origine hébraïque qui succéda à Vasthi", "reference": "Esther 2.17" },
+        { "id": "d_esther_3", "familleId": "fam_esther", "texte": "Le grand adversaire du peuple hébreu à la cour du roi", "reference": "Esther 3.10" },
+        { "id": "d_esther_4", "familleId": "fam_esther", "texte": "Celui que le souverain souhaitait honorer publiquement", "reference": "Esther 6.11" }
+      ],
+      "personnages": [
+        { "id": "p_assuerus",  "familleId": "fam_esther", "nom": "Assuérus",  "descripteurIdentifiantId": "d_esther_1" },
+        { "id": "p_esther",    "familleId": "fam_esther", "nom": "Esther",    "descripteurIdentifiantId": "d_esther_2" },
+        { "id": "p_haman",     "familleId": "fam_esther", "nom": "Haman",     "descripteurIdentifiantId": "d_esther_3" },
+        { "id": "p_mardochee", "familleId": "fam_esther", "nom": "Mardochée", "descripteurIdentifiantId": "d_esther_4" }
+      ]
+    },
+    {
+      "id": "fam_ruth",
+      "nom": "Ruth",
+      "descripteurs": [
+        { "id": "d_ruth_1", "familleId": "fam_ruth", "texte": "L'homme qui s'en alla pour séjourner aux champs de Moab", "reference": "Ruth 1.1" },
+        { "id": "d_ruth_2", "familleId": "fam_ruth", "texte": "Une femme que l'Eternel ramène à vide à Bethléhem", "reference": "Ruth 1.21" },
+        { "id": "d_ruth_3", "familleId": "fam_ruth", "texte": "Une Moabite venue s'abriter sous les ailes du Dieu d'Israël", "reference": "Ruth 2.12" },
+        { "id": "d_ruth_4", "familleId": "fam_ruth", "texte": "L'arrière-grand-père de David", "reference": "Ruth 4.21-22" }
+      ],
+      "personnages": [
+        { "id": "p_elimelec", "familleId": "fam_ruth", "nom": "Elimélec", "descripteurIdentifiantId": "d_ruth_1" },
+        { "id": "p_naomi",    "familleId": "fam_ruth", "nom": "Naomi",    "descripteurIdentifiantId": "d_ruth_2" },
+        { "id": "p_ruth",     "familleId": "fam_ruth", "nom": "Ruth",     "descripteurIdentifiantId": "d_ruth_3" },
+        { "id": "p_boaz",     "familleId": "fam_ruth", "nom": "Boaz",     "descripteurIdentifiantId": "d_ruth_4" }
+      ]
+    },
+    {
+      "id": "fam_conducteurs",
+      "nom": "Conducteurs du peuple",
+      "descripteurs": [
+        { "id": "d_cond_1", "familleId": "fam_conducteurs", "texte": "L'homme qui fit sortir le peuple hors d'Egypte", "reference": "Exode 3.12" },
+        { "id": "d_cond_2", "familleId": "fam_conducteurs", "texte": "Le prince de la tribu de Lévi", "reference": "Nombres 17.3" },
+        { "id": "d_cond_3", "familleId": "fam_conducteurs", "texte": "L'homme qui fit entrer Israël en Canaan", "reference": "Deutéronome 31.23" },
+        { "id": "d_cond_4", "familleId": "fam_conducteurs", "texte": "Un homme qui suivit pleinement l'Eternel", "reference": "Nombres 14.24" }
+      ],
+      "personnages": [
+        { "id": "p_moise", "familleId": "fam_conducteurs", "nom": "Moïse",  "descripteurIdentifiantId": "d_cond_1" },
+        { "id": "p_aaron", "familleId": "fam_conducteurs", "nom": "Aaron",  "descripteurIdentifiantId": "d_cond_2" },
+        { "id": "p_josue", "familleId": "fam_conducteurs", "nom": "Josué",  "descripteurIdentifiantId": "d_cond_3" },
+        { "id": "p_caleb", "familleId": "fam_conducteurs", "nom": "Caleb",  "descripteurIdentifiantId": "d_cond_4" }
+      ]
+    },
+    {
+      "id": "fam_prophetes",
+      "nom": "Prophètes",
+      "descripteurs": [
+        { "id": "d_proph_1", "familleId": "fam_prophetes", "texte": "Le prophète dont les lèvres furent purifiées par un charbon ardent", "reference": "Esaïe 6.6" },
+        { "id": "d_proph_2", "familleId": "fam_prophetes", "texte": "Le prophète qui fut enfermé dans la cour de la prison", "reference": "Jérémie 32.2" },
+        { "id": "d_proph_3", "familleId": "fam_prophetes", "texte": "Le prophète qui eut la vision du temple nouveau", "reference": "Ezéchiel 40.2" },
+        { "id": "d_proph_4", "familleId": "fam_prophetes", "texte": "Le prophète qui fut jeté dans la fosse aux lions", "reference": "Daniel 6.16" }
+      ],
+      "personnages": [
+        { "id": "p_esaie",    "familleId": "fam_prophetes", "nom": "Esaïe",    "descripteurIdentifiantId": "d_proph_1" },
+        { "id": "p_jeremie",  "familleId": "fam_prophetes", "nom": "Jérémie",  "descripteurIdentifiantId": "d_proph_2" },
+        { "id": "p_ezechiel", "familleId": "fam_prophetes", "nom": "Ezéchiel", "descripteurIdentifiantId": "d_proph_3" },
+        { "id": "p_daniel",   "familleId": "fam_prophetes", "nom": "Daniel",   "descripteurIdentifiantId": "d_proph_4" }
+      ]
+    },
+    {
+      "id": "fam_patriarches",
+      "nom": "Patriarches d'Israël",
+      "descripteurs": [
+        { "id": "d_patr_1", "familleId": "fam_patriarches", "texte": "Le patriarche qui offrit son fils unique", "reference": "Hébreux 11.17" },
+        { "id": "d_patr_2", "familleId": "fam_patriarches", "texte": "Le fils de la promesse", "reference": "Genèse 17.19" },
+        { "id": "d_patr_3", "familleId": "fam_patriarches", "texte": "L'homme qui lutta avec l'Ange et prévalut", "reference": "Osée 12.5" },
+        { "id": "d_patr_4", "familleId": "fam_patriarches", "texte": "L'homme qui fut établi sur tout le pays d'Egypte", "reference": "Genèse 41.41" }
+      ],
+      "personnages": [
+        { "id": "p_abraham", "familleId": "fam_patriarches", "nom": "Abraham", "descripteurIdentifiantId": "d_patr_1" },
+        { "id": "p_isaac",   "familleId": "fam_patriarches", "nom": "Isaac",   "descripteurIdentifiantId": "d_patr_2" },
+        { "id": "p_jacob",   "familleId": "fam_patriarches", "nom": "Jacob",   "descripteurIdentifiantId": "d_patr_3" },
+        { "id": "p_joseph",  "familleId": "fam_patriarches", "nom": "Joseph",  "descripteurIdentifiantId": "d_patr_4" }
+      ]
+    },
+    {
+      "id": "fam_rois",
+      "nom": "Rois",
+      "descripteurs": [
+        { "id": "d_rois_1", "familleId": "fam_rois", "texte": "Le roi qui délivra Jabès de Galaad", "reference": "1 Samuel 11.9" },
+        { "id": "d_rois_2", "familleId": "fam_rois", "texte": "Le roi selon le coeur de l'Eternel", "reference": "Actes 13.22" },
+        { "id": "d_rois_3", "familleId": "fam_rois", "texte": "Le roi qui bâtit la maison de l'Eternel", "reference": "1 Rois 6.1" },
+        { "id": "d_rois_4", "familleId": "fam_rois", "texte": "Le roi sous lequel le royaume fut divisé", "reference": "1 Rois 12.16-19" }
+      ],
+      "personnages": [
+        { "id": "p_saul",    "familleId": "fam_rois", "nom": "Saül",    "descripteurIdentifiantId": "d_rois_1" },
+        { "id": "p_david",   "familleId": "fam_rois", "nom": "David",   "descripteurIdentifiantId": "d_rois_2" },
+        { "id": "p_salomon", "familleId": "fam_rois", "nom": "Salomon", "descripteurIdentifiantId": "d_rois_3" },
+        { "id": "p_roboam",  "familleId": "fam_rois", "nom": "Roboam",  "descripteurIdentifiantId": "d_rois_4" }
+      ]
+    },
+    {
+      "id": "fam_disciples",
+      "nom": "Disciples",
+      "descripteurs": [
+        { "id": "d_disc_1", "familleId": "fam_disciples", "texte": "Le disciple qui marcha sur la mer", "reference": "Matthieu 14.29" },
+        { "id": "d_disc_2", "familleId": "fam_disciples", "texte": "Le disciple que Jésus aimait", "reference": "Jean 21.20" },
+        { "id": "d_disc_3", "familleId": "fam_disciples", "texte": "Le disciple qui conduisit Nathanaël au Seigneur", "reference": "Jean 1.47" },
+        { "id": "d_disc_4", "familleId": "fam_disciples", "texte": "Le disciple qui fut décapité par Hérode", "reference": "Actes 12.2" }
+      ],
+      "personnages": [
+        { "id": "p_pierre",   "familleId": "fam_disciples", "nom": "Pierre",   "descripteurIdentifiantId": "d_disc_1" },
+        { "id": "p_jean",     "familleId": "fam_disciples", "nom": "Jean",     "descripteurIdentifiantId": "d_disc_2" },
+        { "id": "p_philippe", "familleId": "fam_disciples", "nom": "Philippe", "descripteurIdentifiantId": "d_disc_3" },
+        { "id": "p_jacques",  "familleId": "fam_disciples", "nom": "Jacques",  "descripteurIdentifiantId": "d_disc_4" }
+      ]
+    },
+    {
+      "id": "fam_compagnons_paul",
+      "nom": "Compagnons de Paul",
+      "descripteurs": [
+        { "id": "d_paul_1", "familleId": "fam_compagnons_paul", "texte": "Un compagnon de Paul choisi par les frères", "reference": "Actes 15.40" },
+        { "id": "d_paul_2", "familleId": "fam_compagnons_paul", "texte": "Un disciple dont la mère était Juive croyante", "reference": "Actes 16.1" },
+        { "id": "d_paul_3", "familleId": "fam_compagnons_paul", "texte": "Un collaborateur dont Paul dit : combats avec moi", "reference": "Philémon 2" },
+        { "id": "d_paul_4", "familleId": "fam_compagnons_paul", "texte": "Un compagnon de captivité de Paul", "reference": "Philémon 23" }
+      ],
+      "personnages": [
+        { "id": "p_silas",    "familleId": "fam_compagnons_paul", "nom": "Silas",    "descripteurIdentifiantId": "d_paul_1" },
+        { "id": "p_timothee", "familleId": "fam_compagnons_paul", "nom": "Timothée", "descripteurIdentifiantId": "d_paul_2" },
+        { "id": "p_archipe",  "familleId": "fam_compagnons_paul", "nom": "Archippe", "descripteurIdentifiantId": "d_paul_3" },
+        { "id": "p_epaphras", "familleId": "fam_compagnons_paul", "nom": "Epaphras", "descripteurIdentifiantId": "d_paul_4" }
+      ]
+    },
+    {
+      "id": "fam_fideles_messie",
+      "nom": "Fidèles qui attendaient le Messie",
+      "descripteurs": [
+        { "id": "d_mess_1", "familleId": "fam_fideles_messie", "texte": "Un sacrificateur qui fut muet quelque temps", "reference": "Luc 1.22" },
+        { "id": "d_mess_2", "familleId": "fam_fideles_messie", "texte": "La mère de Jean le Baptiseur", "reference": "Luc 1.57" },
+        { "id": "d_mess_3", "familleId": "fam_fideles_messie", "texte": "L'homme qui attendait la consolation d'Israël", "reference": "Luc 2.25" },
+        { "id": "d_mess_4", "familleId": "fam_fideles_messie", "texte": "Une prophétesse qui ne quittait pas le temple", "reference": "Luc 2.37" }
+      ],
+      "personnages": [
+        { "id": "p_zacharie",  "familleId": "fam_fideles_messie", "nom": "Zacharie",  "descripteurIdentifiantId": "d_mess_1" },
+        { "id": "p_elisabeth", "familleId": "fam_fideles_messie", "nom": "Elisabeth", "descripteurIdentifiantId": "d_mess_2" },
+        { "id": "p_simeon",    "familleId": "fam_fideles_messie", "nom": "Siméon",    "descripteurIdentifiantId": "d_mess_3" },
+        { "id": "p_anne",      "familleId": "fam_fideles_messie", "nom": "Anne",      "descripteurIdentifiantId": "d_mess_4" }
+      ]
+    },
+    {
+      "id": "fam_sacrificateurs",
+      "nom": "Sacrificateurs",
+      "descripteurs": [
+        { "id": "d_sacr_1", "familleId": "fam_sacrificateurs", "texte": "Le sacrificateur qui fut revêtu des vêtements d'Aaron", "reference": "Nombres 20.28" },
+        { "id": "d_sacr_2", "familleId": "fam_sacrificateurs", "texte": "Le sacrificateur dont les actes furent comptés à justice", "reference": "Psaumes 106.30-31" },
+        { "id": "d_sacr_3", "familleId": "fam_sacrificateurs", "texte": "Le sacrificateur qui oignit Salomon", "reference": "1 Rois 1.39" },
+        { "id": "d_sacr_4", "familleId": "fam_sacrificateurs", "texte": "Le sacrificateur qui instruisit Joas", "reference": "2 Rois 12.2" }
+      ],
+      "personnages": [
+        { "id": "p_eleazar",  "familleId": "fam_sacrificateurs", "nom": "Eléazar",  "descripteurIdentifiantId": "d_sacr_1" },
+        { "id": "p_phineas",  "familleId": "fam_sacrificateurs", "nom": "Phinées",  "descripteurIdentifiantId": "d_sacr_2" },
+        { "id": "p_tsadok",   "familleId": "fam_sacrificateurs", "nom": "Tsadok",   "descripteurIdentifiantId": "d_sacr_3" },
+        { "id": "p_yehoyada", "familleId": "fam_sacrificateurs", "nom": "Yehoyada", "descripteurIdentifiantId": "d_sacr_4" }
+      ]
+    },
+    {
+      "id": "fam_servantes",
+      "nom": "Servantes de l'assemblée",
+      "descripteurs": [
+        { "id": "d_serv_1", "familleId": "fam_servantes", "texte": "Une femme qui fut ressuscitée par Pierre", "reference": "Actes 9.40" },
+        { "id": "d_serv_2", "familleId": "fam_servantes", "texte": "Une marchande de pourpre qui servait Dieu", "reference": "Actes 16.14" },
+        { "id": "d_serv_3", "familleId": "fam_servantes", "texte": "La servante de l'assemblée qui est à Cenchrée", "reference": "Romains 16.1" },
+        { "id": "d_serv_4", "familleId": "fam_servantes", "texte": "La bien-aimée qui a beaucoup travaillé dans le Seigneur", "reference": "Romains 16.12" }
+      ],
+      "personnages": [
+        { "id": "p_tabitha", "familleId": "fam_servantes", "nom": "Tabitha (Dorcas)", "descripteurIdentifiantId": "d_serv_1" },
+        { "id": "p_lydie",   "familleId": "fam_servantes", "nom": "Lydie",            "descripteurIdentifiantId": "d_serv_2" },
+        { "id": "p_phoebe",  "familleId": "fam_servantes", "nom": "Phoebé",           "descripteurIdentifiantId": "d_serv_3" },
+        { "id": "p_perside", "familleId": "fam_servantes", "nom": "Perside",          "descripteurIdentifiantId": "d_serv_4" }
+      ]
+    },
+    {
+      "id": "fam_juges",
+      "nom": "Juges",
+      "descripteurs": [
+        { "id": "d_juge_1", "familleId": "fam_juges", "texte": "Un sauveur d'Israël qui était gaucher", "reference": "Juges 3.15" },
+        { "id": "d_juge_2", "familleId": "fam_juges", "texte": "Le vainqueur du camp de Madian", "reference": "Juges 7.22" },
+        { "id": "d_juge_3", "familleId": "fam_juges", "texte": "Le juge qui fit un voeu imprudent", "reference": "Juges 11.30" },
+        { "id": "d_juge_4", "familleId": "fam_juges", "texte": "Le héros qui tua plus d'ennemis dans sa mort que dans sa vie", "reference": "Juges 16.30" }
+      ],
+      "personnages": [
+        { "id": "p_ehud",   "familleId": "fam_juges", "nom": "Ehud",   "descripteurIdentifiantId": "d_juge_1" },
+        { "id": "p_gideon", "familleId": "fam_juges", "nom": "Gédéon", "descripteurIdentifiantId": "d_juge_2" },
+        { "id": "p_jephte", "familleId": "fam_juges", "nom": "Jephté", "descripteurIdentifiantId": "d_juge_3" },
+        { "id": "p_samson", "familleId": "fam_juges", "nom": "Samson", "descripteurIdentifiantId": "d_juge_4" }
+      ]
+    },
+    {
+      "id": "fam_retour_captivite",
+      "nom": "Retour de la captivité",
+      "descripteurs": [
+        { "id": "d_capt_1", "familleId": "fam_retour_captivite", "texte": "Un scribe versé dans la loi de Moïse", "reference": "Esdras 7.6" },
+        { "id": "d_capt_2", "familleId": "fam_retour_captivite", "texte": "Le gouverneur de Jérusalem qui en répara les ruines", "reference": "Néhémie 6.1" },
+        { "id": "d_capt_3", "familleId": "fam_retour_captivite", "texte": "Le gouverneur de Juda, fils de Shealthiel", "reference": "Aggée 1.1" },
+        { "id": "d_capt_4", "familleId": "fam_retour_captivite", "texte": "Le grand sacrificateur qui écouta les paroles d'Aggée", "reference": "Aggée 1.12" }
+      ],
+      "personnages": [
+        { "id": "p_esdras",     "familleId": "fam_retour_captivite", "nom": "Esdras",                 "descripteurIdentifiantId": "d_capt_1" },
+        { "id": "p_nehemie",    "familleId": "fam_retour_captivite", "nom": "Néhémie",               "descripteurIdentifiantId": "d_capt_2" },
+        { "id": "p_zorobabel",  "familleId": "fam_retour_captivite", "nom": "Zorobabel",             "descripteurIdentifiantId": "d_capt_3" },
+        { "id": "p_josua_sacr", "familleId": "fam_retour_captivite", "nom": "Josué (sacrificateur)", "descripteurIdentifiantId": "d_capt_4" }
+      ]
+    },
+    {
+      "id": "fam_premiers_foi",
+      "nom": "Premiers hommes de foi",
+      "descripteurs": [
+        { "id": "d_foi_1", "familleId": "fam_premiers_foi", "texte": "L'homme qui appela sa femme Eve : mère de tous les vivants", "reference": "Genèse 3.20" },
+        { "id": "d_foi_2", "familleId": "fam_premiers_foi", "texte": "L'homme qui offrit le premier sacrifice agréé par Dieu", "reference": "Genèse 4.4" },
+        { "id": "d_foi_3", "familleId": "fam_premiers_foi", "texte": "Un homme qui marcha avec Dieu 300 ans", "reference": "Genèse 5.22" },
+        { "id": "d_foi_4", "familleId": "fam_premiers_foi", "texte": "Un homme parfait parmi ceux de son temps", "reference": "Genèse 6.9" }
+      ],
+      "personnages": [
+        { "id": "p_adam",  "familleId": "fam_premiers_foi", "nom": "Adam",  "descripteurIdentifiantId": "d_foi_1" },
+        { "id": "p_abel",  "familleId": "fam_premiers_foi", "nom": "Abel",  "descripteurIdentifiantId": "d_foi_2" },
+        { "id": "p_henoc", "familleId": "fam_premiers_foi", "nom": "Hénoc", "descripteurIdentifiantId": "d_foi_3" },
+        { "id": "p_noe",   "familleId": "fam_premiers_foi", "nom": "Noé",   "descripteurIdentifiantId": "d_foi_4" }
+      ]
+    }
+  ]
+}
