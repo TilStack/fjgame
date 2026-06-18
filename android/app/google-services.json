@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "562318926511",
+    "project_id": "fjgame-a15e1",
+    "storage_bucket": "fjgame-a15e1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:562318926511:android:b96edeb892e380800a6a5a",
+        "android_client_info": {
+          "package_name": "com.fjgame.fjgame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8QEGf3a1neWYulFeXXs5-jRfc9sE5CyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
