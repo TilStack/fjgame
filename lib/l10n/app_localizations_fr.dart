@@ -124,4 +124,124 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get gameComingSoon => 'L\'écran de jeu arrive bientôt...';
+
+  @override
+  String get playLocal => 'Jouer en local';
+
+  @override
+  String get playOnline => 'Jouer en ligne';
+
+  @override
+  String get players => 'Joueurs';
+
+  @override
+  String get addPlayer => 'Ajouter un joueur';
+
+  @override
+  String get removePlayer => 'Supprimer';
+
+  @override
+  String playerName(int number) {
+    return 'Nom du joueur $number';
+  }
+
+  @override
+  String get minPlayers => 'Minimum 3 joueurs requis';
+
+  @override
+  String get maxPlayers => 'Maximum 6 joueurs';
+
+  @override
+  String get startGame => 'Lancer la partie';
+
+  @override
+  String get passPhone => 'Passe le téléphone à';
+
+  @override
+  String get iAmReady => 'Je suis prêt';
+
+  @override
+  String get myHand => 'Ma main';
+
+  @override
+  String get chooseFamily => 'Quelle famille ?';
+
+  @override
+  String get chooseDescriptor => 'Quelle description allez-vous demander ?';
+
+  @override
+  String get chooseTarget => 'À qui allez-vous demander ?';
+
+  @override
+  String get askButton => 'Demander !';
+
+  @override
+  String get successTitle => 'Bonne réponse !';
+
+  @override
+  String get failTitle => 'Raté !';
+
+  @override
+  String successMessage(String targetName, String personnageName) {
+    return '$targetName t\'a donné la carte de $personnageName';
+  }
+
+  @override
+  String failMessage(String targetName) {
+    return '$targetName n\'avait pas cette carte';
+  }
+
+  @override
+  String familyCompleted(String familyName) {
+    return 'Famille $familyName complétée !';
+  }
+
+  @override
+  String get continueButton => 'Continuer';
+
+  @override
+  String get gameOver => 'Partie terminée !';
+
+  @override
+  String get finalRanking => 'Classement final';
+
+  @override
+  String get families => 'familles';
+
+  @override
+  String get playAgain => 'Rejouer';
+
+  @override
+  String get backHome => 'Accueil';
+
+  @override
+  String get yourTurn => 'C\'est ton tour';
+
+  @override
+  String cardsInHand(int count) {
+    return '$count carte(s) en main';
+  }
+
+  @override
+  String get completedFamilies => 'Familles posées';
+
+  @override
+  String get score => 'Score';
+
+  @override
+  String get identifiant => 'Identifiant';
+
+  @override
+  String get cle => 'Clé';
+
+  @override
+  String get youReplay => 'Tu rejoues !';
+
+  @override
+  String get scores => 'Scores';
+
+  @override
+  String familiesCount(int count) {
+    return '$count famille(s)';
+  }
 }

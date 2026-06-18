@@ -42,5 +42,72 @@
   "languageEn": "English",
   "badgeGuest": "Guest",
   "badgeConnected": "Connected",
-  "gameComingSoon": "The game screen is coming soon..."
+  "gameComingSoon": "The game screen is coming soon...",
+  "playLocal": "Play local",
+  "playOnline": "Play online",
+  "players": "Players",
+  "addPlayer": "Add a player",
+  "removePlayer": "Remove",
+  "playerName": "Player {number} name",
+  "@playerName": {
+    "placeholders": {
+      "number": { "type": "int" }
+    }
+  },
+  "minPlayers": "Minimum 3 players required",
+  "maxPlayers": "Maximum 6 players",
+  "startGame": "Start game",
+  "passPhone": "Pass the phone to",
+  "iAmReady": "I am ready",
+  "myHand": "My hand",
+  "chooseFamily": "Which family?",
+  "chooseDescriptor": "Which description will you ask for?",
+  "chooseTarget": "Who will you ask?",
+  "askButton": "Ask!",
+  "successTitle": "Correct!",
+  "failTitle": "Wrong!",
+  "successMessage": "{targetName} gave you the {personnageName} card",
+  "@successMessage": {
+    "placeholders": {
+      "targetName": { "type": "String" },
+      "personnageName": { "type": "String" }
+    }
+  },
+  "failMessage": "{targetName} didn't have this card",
+  "@failMessage": {
+    "placeholders": {
+      "targetName": { "type": "String" }
+    }
+  },
+  "familyCompleted": "Family {familyName} completed!",
+  "@familyCompleted": {
+    "placeholders": {
+      "familyName": { "type": "String" }
+    }
+  },
+  "continueButton": "Continue",
+  "gameOver": "Game over!",
+  "finalRanking": "Final ranking",
+  "families": "families",
+  "playAgain": "Play again",
+  "backHome": "Home",
+  "yourTurn": "Your turn",
+  "cardsInHand": "{count} card(s) in hand",
+  "@cardsInHand": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "completedFamilies": "Completed families",
+  "score": "Score",
+  "identifiant": "Identifier",
+  "cle": "Key",
+  "youReplay": "You play again!",
+  "scores": "Scores",
+  "familiesCount": "{count} family(ies)",
+  "@familiesCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  }
 }

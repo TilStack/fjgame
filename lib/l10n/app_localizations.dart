@@ -325,6 +325,222 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'L\'écran de jeu arrive bientôt...'**
   String get gameComingSoon;
+
+  /// No description provided for @playLocal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jouer en local'**
+  String get playLocal;
+
+  /// No description provided for @playOnline.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jouer en ligne'**
+  String get playOnline;
+
+  /// No description provided for @players.
+  ///
+  /// In fr, this message translates to:
+  /// **'Joueurs'**
+  String get players;
+
+  /// No description provided for @addPlayer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter un joueur'**
+  String get addPlayer;
+
+  /// No description provided for @removePlayer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer'**
+  String get removePlayer;
+
+  /// No description provided for @playerName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom du joueur {number}'**
+  String playerName(int number);
+
+  /// No description provided for @minPlayers.
+  ///
+  /// In fr, this message translates to:
+  /// **'Minimum 3 joueurs requis'**
+  String get minPlayers;
+
+  /// No description provided for @maxPlayers.
+  ///
+  /// In fr, this message translates to:
+  /// **'Maximum 6 joueurs'**
+  String get maxPlayers;
+
+  /// No description provided for @startGame.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lancer la partie'**
+  String get startGame;
+
+  /// No description provided for @passPhone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Passe le téléphone à'**
+  String get passPhone;
+
+  /// No description provided for @iAmReady.
+  ///
+  /// In fr, this message translates to:
+  /// **'Je suis prêt'**
+  String get iAmReady;
+
+  /// No description provided for @myHand.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ma main'**
+  String get myHand;
+
+  /// No description provided for @chooseFamily.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quelle famille ?'**
+  String get chooseFamily;
+
+  /// No description provided for @chooseDescriptor.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quelle description allez-vous demander ?'**
+  String get chooseDescriptor;
+
+  /// No description provided for @chooseTarget.
+  ///
+  /// In fr, this message translates to:
+  /// **'À qui allez-vous demander ?'**
+  String get chooseTarget;
+
+  /// No description provided for @askButton.
+  ///
+  /// In fr, this message translates to:
+  /// **'Demander !'**
+  String get askButton;
+
+  /// No description provided for @successTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bonne réponse !'**
+  String get successTitle;
+
+  /// No description provided for @failTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Raté !'**
+  String get failTitle;
+
+  /// No description provided for @successMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'{targetName} t\'a donné la carte de {personnageName}'**
+  String successMessage(String targetName, String personnageName);
+
+  /// No description provided for @failMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'{targetName} n\'avait pas cette carte'**
+  String failMessage(String targetName);
+
+  /// No description provided for @familyCompleted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Famille {familyName} complétée !'**
+  String familyCompleted(String familyName);
+
+  /// No description provided for @continueButton.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer'**
+  String get continueButton;
+
+  /// No description provided for @gameOver.
+  ///
+  /// In fr, this message translates to:
+  /// **'Partie terminée !'**
+  String get gameOver;
+
+  /// No description provided for @finalRanking.
+  ///
+  /// In fr, this message translates to:
+  /// **'Classement final'**
+  String get finalRanking;
+
+  /// No description provided for @families.
+  ///
+  /// In fr, this message translates to:
+  /// **'familles'**
+  String get families;
+
+  /// No description provided for @playAgain.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rejouer'**
+  String get playAgain;
+
+  /// No description provided for @backHome.
+  ///
+  /// In fr, this message translates to:
+  /// **'Accueil'**
+  String get backHome;
+
+  /// No description provided for @yourTurn.
+  ///
+  /// In fr, this message translates to:
+  /// **'C\'est ton tour'**
+  String get yourTurn;
+
+  /// No description provided for @cardsInHand.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} carte(s) en main'**
+  String cardsInHand(int count);
+
+  /// No description provided for @completedFamilies.
+  ///
+  /// In fr, this message translates to:
+  /// **'Familles posées'**
+  String get completedFamilies;
+
+  /// No description provided for @score.
+  ///
+  /// In fr, this message translates to:
+  /// **'Score'**
+  String get score;
+
+  /// No description provided for @identifiant.
+  ///
+  /// In fr, this message translates to:
+  /// **'Identifiant'**
+  String get identifiant;
+
+  /// No description provided for @cle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Clé'**
+  String get cle;
+
+  /// No description provided for @youReplay.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu rejoues !'**
+  String get youReplay;
+
+  /// No description provided for @scores.
+  ///
+  /// In fr, this message translates to:
+  /// **'Scores'**
+  String get scores;
+
+  /// No description provided for @familiesCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} famille(s)'**
+  String familiesCount(int count);
 }
 
 class _AppLocalizationsDelegate

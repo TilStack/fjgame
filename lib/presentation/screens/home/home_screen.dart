@@ -1,12 +1,13 @@
-// Écran d'accueil placeholder. Affiche le nom d'utilisateur, un badge de statut,
-// et un bouton de déconnexion dans l'AppBar.
+// Écran d'accueil : bienvenue, badge de statut, bouton Jouer en local.
 
 import 'package:flutter/material.dart';
 import 'package:fjgame/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../application/providers/auth_provider.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../widgets/common/primary_button.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -17,9 +18,6 @@ class HomeScreen extends ConsumerWidget {
     final user = authState.user;
     final l10n = AppLocalizations.of(context)!;
     final primary = Theme.of(context).colorScheme.primary;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textSecondary =
-        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
 
     return Scaffold(
       appBar: AppBar(
@@ -71,14 +69,11 @@ class HomeScreen extends ConsumerWidget {
                       ),
                     ),
             const SizedBox(height: 32),
-            Text(
-              l10n.gameComingSoon,
-              style: AppTextStyles.inter(
-                fontSize: 14,
-                color: textSecondary,
-                fontStyle: FontStyle.italic,
-              ),
+            PrimaryButton(
+              label: l10n.playLocal,
+              onPressed: () => context.go('/lobby-local'),
             ),
+            // TODO Phase 2 : multijoueur en ligne
           ],
         ),
       ),

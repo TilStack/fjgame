@@ -42,5 +42,72 @@
   "languageEn": "English",
   "badgeGuest": "Invité",
   "badgeConnected": "Connecté",
-  "gameComingSoon": "L'écran de jeu arrive bientôt..."
+  "gameComingSoon": "L'écran de jeu arrive bientôt...",
+  "playLocal": "Jouer en local",
+  "playOnline": "Jouer en ligne",
+  "players": "Joueurs",
+  "addPlayer": "Ajouter un joueur",
+  "removePlayer": "Supprimer",
+  "playerName": "Nom du joueur {number}",
+  "@playerName": {
+    "placeholders": {
+      "number": { "type": "int" }
+    }
+  },
+  "minPlayers": "Minimum 3 joueurs requis",
+  "maxPlayers": "Maximum 6 joueurs",
+  "startGame": "Lancer la partie",
+  "passPhone": "Passe le téléphone à",
+  "iAmReady": "Je suis prêt",
+  "myHand": "Ma main",
+  "chooseFamily": "Quelle famille ?",
+  "chooseDescriptor": "Quelle description allez-vous demander ?",
+  "chooseTarget": "À qui allez-vous demander ?",
+  "askButton": "Demander !",
+  "successTitle": "Bonne réponse !",
+  "failTitle": "Raté !",
+  "successMessage": "{targetName} t'a donné la carte de {personnageName}",
+  "@successMessage": {
+    "placeholders": {
+      "targetName": { "type": "String" },
+      "personnageName": { "type": "String" }
+    }
+  },
+  "failMessage": "{targetName} n'avait pas cette carte",
+  "@failMessage": {
+    "placeholders": {
+      "targetName": { "type": "String" }
+    }
+  },
+  "familyCompleted": "Famille {familyName} complétée !",
+  "@familyCompleted": {
+    "placeholders": {
+      "familyName": { "type": "String" }
+    }
+  },
+  "continueButton": "Continuer",
+  "gameOver": "Partie terminée !",
+  "finalRanking": "Classement final",
+  "families": "familles",
+  "playAgain": "Rejouer",
+  "backHome": "Accueil",
+  "yourTurn": "C'est ton tour",
+  "cardsInHand": "{count} carte(s) en main",
+  "@cardsInHand": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "completedFamilies": "Familles posées",
+  "score": "Score",
+  "identifiant": "Identifiant",
+  "cle": "Clé",
+  "youReplay": "Tu rejoues !",
+  "scores": "Scores",
+  "familiesCount": "{count} famille(s)",
+  "@familiesCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  }
 }
