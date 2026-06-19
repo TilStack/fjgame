@@ -565,6 +565,114 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Appuie pour voir ta carte'**
   String get tapToReveal;
+
+  /// No description provided for @pseudo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pseudo'**
+  String get pseudo;
+
+  /// No description provided for @pseudoHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'@mon_pseudo'**
+  String get pseudoHint;
+
+  /// No description provided for @pseudoRequired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le pseudo est requis'**
+  String get pseudoRequired;
+
+  /// No description provided for @pseudoTooShort.
+  ///
+  /// In fr, this message translates to:
+  /// **'Minimum 3 caractères'**
+  String get pseudoTooShort;
+
+  /// No description provided for @pseudoInvalid.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lettres, chiffres et _ uniquement'**
+  String get pseudoInvalid;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe oublié ?'**
+  String get forgotPassword;
+
+  /// No description provided for @forgotPasswordExplain.
+  ///
+  /// In fr, this message translates to:
+  /// **'Entrez votre adresse e-mail, nous vous enverrons un lien pour réinitialiser votre mot de passe'**
+  String get forgotPasswordExplain;
+
+  /// No description provided for @sendResetLink.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyer le lien'**
+  String get sendResetLink;
+
+  /// No description provided for @resetPasswordSent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lien envoyé, vérifiez votre boîte mail'**
+  String get resetPasswordSent;
+
+  /// No description provided for @comingSoon.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bientôt'**
+  String get comingSoon;
+
+  /// No description provided for @settings.
+  ///
+  /// In fr, this message translates to:
+  /// **'Paramètres'**
+  String get settings;
+
+  /// No description provided for @appVersion.
+  ///
+  /// In fr, this message translates to:
+  /// **'FJ Game v1.0.0'**
+  String get appVersion;
+
+  /// No description provided for @onlineStatus.
+  ///
+  /// In fr, this message translates to:
+  /// **'En ligne'**
+  String get onlineStatus;
+
+  /// No description provided for @offlineStatus.
+  ///
+  /// In fr, this message translates to:
+  /// **'Hors ligne'**
+  String get offlineStatus;
+
+  /// No description provided for @tapCard.
+  ///
+  /// In fr, this message translates to:
+  /// **'Appuie sur une carte pour la voir'**
+  String get tapCard;
+
+  /// No description provided for @soundOn.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sons activés'**
+  String get soundOn;
+
+  /// No description provided for @soundOff.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sons désactivés'**
+  String get soundOff;
+
+  /// No description provided for @closeCard.
+  ///
+  /// In fr, this message translates to:
+  /// **'Appuie pour fermer'**
+  String get closeCard;
 }
 
 class _AppLocalizationsDelegate

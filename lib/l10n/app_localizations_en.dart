@@ -256,4 +256,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tapToReveal => 'Tap to reveal your card';
+
+  @override
+  String get pseudo => 'Username';
+
+  @override
+  String get pseudoHint => '@my_username';
+
+  @override
+  String get pseudoRequired => 'Username is required';
+
+  @override
+  String get pseudoTooShort => 'Minimum 3 characters';
+
+  @override
+  String get pseudoInvalid => 'Letters, numbers and _ only';
+
+  @override
+  String get forgotPassword => 'Forgot password?';
+
+  @override
+  String get forgotPasswordExplain => 'Enter your email address and we will send you a link to reset your password';
+
+  @override
+  String get sendResetLink => 'Send link';
+
+  @override
+  String get resetPasswordSent => 'Link sent, check your inbox';
+
+  @override
+  String get comingSoon => 'Soon';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get appVersion => 'FJ Game v1.0.0';
+
+  @override
+  String get onlineStatus => 'Online';
+
+  @override
+  String get offlineStatus => 'Offline';
+
+  @override
+  String get tapCard => 'Tap a card to see it';
+
+  @override
+  String get soundOn => 'Sounds enabled';
+
+  @override
+  String get soundOff => 'Sounds disabled';
+
+  @override
+  String get closeCard => 'Tap to close';
 }

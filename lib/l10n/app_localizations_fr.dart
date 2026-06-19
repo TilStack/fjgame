@@ -256,4 +256,58 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get tapToReveal => 'Appuie pour voir ta carte';
+
+  @override
+  String get pseudo => 'Pseudo';
+
+  @override
+  String get pseudoHint => '@mon_pseudo';
+
+  @override
+  String get pseudoRequired => 'Le pseudo est requis';
+
+  @override
+  String get pseudoTooShort => 'Minimum 3 caractères';
+
+  @override
+  String get pseudoInvalid => 'Lettres, chiffres et _ uniquement';
+
+  @override
+  String get forgotPassword => 'Mot de passe oublié ?';
+
+  @override
+  String get forgotPasswordExplain => 'Entrez votre adresse e-mail, nous vous enverrons un lien pour réinitialiser votre mot de passe';
+
+  @override
+  String get sendResetLink => 'Envoyer le lien';
+
+  @override
+  String get resetPasswordSent => 'Lien envoyé, vérifiez votre boîte mail';
+
+  @override
+  String get comingSoon => 'Bientôt';
+
+  @override
+  String get settings => 'Paramètres';
+
+  @override
+  String get appVersion => 'FJ Game v1.0.0';
+
+  @override
+  String get onlineStatus => 'En ligne';
+
+  @override
+  String get offlineStatus => 'Hors ligne';
+
+  @override
+  String get tapCard => 'Appuie sur une carte pour la voir';
+
+  @override
+  String get soundOn => 'Sons activés';
+
+  @override
+  String get soundOff => 'Sons désactivés';
+
+  @override
+  String get closeCard => 'Appuie pour fermer';
 }
