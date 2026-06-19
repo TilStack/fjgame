@@ -6,6 +6,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../domain/models/famille.dart';
@@ -178,7 +179,7 @@ class _CartePersonnageWidgetState extends State<CartePersonnageWidget>
         child: widget.mode == CarteMode.reveal
             ? _buildRevealContent(primary, textSecondary, identifiant)
             : _buildMainContent(
-                primary, textSecondary, textPrimary, identifiant, cles),
+                primary, textSecondary, textPrimary, borderColor, identifiant, cles),
       ),
     );
   }
@@ -187,102 +188,173 @@ class _CartePersonnageWidgetState extends State<CartePersonnageWidget>
     Color primary,
     Color textSecondary,
     Color textPrimary,
+    Color borderColor,
     Descripteur identifiant,
     List<Descripteur> cles,
   ) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Center(
-          child: Text(
-            widget.personnage.nom,
-            textAlign: TextAlign.center,
-            style: AppTextStyles.cinzel(
-              fontSize: 15,
-              color: primary,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        const Divider(height: 16),
+        // En-tête : croix + badge famille
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              '★ ',
-              style: AppTextStyles.inter(fontSize: 12, color: primary),
+            Opacity(
+              opacity: 0.6,
+              child: SizedBox(
+                width: 16, height: 16,
+                child: Stack(alignment: Alignment.center, children: [
+                  Container(width: 2, height: 12, color: primary),
+                  Container(width: 12, height: 2, color: primary),
+                ]),
+              ),
             ),
-            Expanded(
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: primary,
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: Text(
-                identifiant.texte,
-                style: AppTextStyles.inter(
-                  fontSize: 11,
-                  color: primary,
-                  fontStyle: FontStyle.italic,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+                widget.famille.nom.toUpperCase(),
+                style: const TextStyle(
+                  color: Colors.white, fontSize: 8,
+                  fontWeight: FontWeight.bold, letterSpacing: 1.5),
               ),
             ),
           ],
         ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(
-            identifiant.reference,
-            style: AppTextStyles.inter(
-              fontSize: 10,
-              color: textSecondary,
-              fontStyle: FontStyle.italic,
+        Divider(color: borderColor, height: 10),
+
+        // Nom personnage avec lignes décoratives
+        Row(
+          children: [
+            Expanded(
+              child: Divider(
+                color: primary.withValues(alpha: 0.3), thickness: 1),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: Text(
+                widget.personnage.nom,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.cinzel(
+                    fontSize: 13, color: primary, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Expanded(
+              child: Divider(
+                color: primary.withValues(alpha: 0.3), thickness: 1),
+            ),
+          ],
         ),
-        const Divider(height: 12),
-        Expanded(
+        const SizedBox(height: 4),
+
+        // Container identifiant
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 4),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: primary.withValues(alpha: 0.08),
+            border: Border.all(color: primary.withValues(alpha: 0.25)),
+            borderRadius: BorderRadius.circular(8),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: cles
-                .take(3)
-                .map(
-                  (d) => Padding(
-                    padding: const EdgeInsets.only(bottom: 6),
-                    child: Column(
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.star, size: 10, color: primary),
+                  const SizedBox(width: 4),
+                  Text(
+                    'IDENTIFIANT',
+                    style: TextStyle(
+                      fontSize: 9, color: primary, letterSpacing: 0.8,
+                      fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                identifiant.texte,
+                style: AppTextStyles.inter(
+                    fontSize: 10, color: primary, fontStyle: FontStyle.italic),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  identifiant.reference,
+                  style: AppTextStyles.inter(
+                      fontSize: 9,
+                      color: primary.withValues(alpha: 0.6),
+                      fontStyle: FontStyle.italic),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        // Clés 1, 2, 3
+        Expanded(
+          child: Column(
+            children: cles.take(3).toList().asMap().entries.map((e) {
+              final idx = e.key;
+              final d = e.value;
+              return Column(
+                children: [
+                  if (idx > 0) Divider(color: borderColor, height: 8, thickness: 0.5),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '— ',
+                        Container(
+                          width: 16, height: 16,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: borderColor),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '${idx + 1}',
                               style: AppTextStyles.inter(
-                                  fontSize: 11, color: textSecondary),
-                            ),
-                            Expanded(
-                              child: Text(
-                                d.texte,
-                                style: AppTextStyles.inter(
-                                    fontSize: 11, color: textPrimary),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            d.reference,
-                            style: AppTextStyles.inter(
-                              fontSize: 10,
-                              color: textSecondary,
+                                  fontSize: 9, color: textSecondary),
                             ),
                           ),
+                        ),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                            d.texte,
+                            style: AppTextStyles.inter(
+                                fontSize: 10, color: textPrimary),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Text(
+                          d.reference,
+                          style: AppTextStyles.inter(
+                              fontSize: 9, color: textSecondary),
                         ),
                       ],
                     ),
                   ),
-                )
-                .toList(),
+                ],
+              );
+            }).toList(),
+          ),
+        ),
+
+        // Pied de page
+        Divider(color: borderColor, height: 8),
+        Center(
+          child: Text(
+            'FJ GAME · ${widget.famille.nom}',
+            style: GoogleFonts.lora(
+              fontSize: 8, color: textSecondary, letterSpacing: 1),
           ),
         ),
       ],
