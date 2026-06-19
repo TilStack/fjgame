@@ -109,5 +109,9 @@
     "placeholders": {
       "count": { "type": "int" }
     }
-  }
+  },
+  "distributing": "Distribution en cours...",
+  "skipAnimation": "Passer",
+  "familyReveal": "Famille complétée !",
+  "tapToReveal": "Appuie pour voir ta carte"
 }

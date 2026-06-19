@@ -1,8 +1,10 @@
 // Écran principal du tour : le joueur actif consulte sa main et formule sa demande.
+// Sections 3 et 4 apparaissent avec FadeIn + SlideIn quand elles deviennent visibles.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../application/providers/game_provider.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
@@ -36,7 +38,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   }
 
   void _onDescripteurSelected(Descripteur d) {
-    setState(() => _selectedDescripteur = d);
+    setState(() {
+      _selectedDescripteur = d;
+      _selectedCible = null;
+    });
   }
 
   void _onCibleSelected(JoueurPartie j) {
@@ -49,7 +54,6 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         _selectedCible == null) {
       return;
     }
-
     ref.read(gameNotifierProvider.notifier).traiterDemande(
           cibleId: _selectedCible!.id,
           familleId: _selectedFamille!.id,
@@ -58,7 +62,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     context.go('/game/resultat');
   }
 
-  void _showScoresSheet(BuildContext context, GameState gs, AppLocalizations l10n) {
+  void _showScoresSheet(
+      BuildContext context, GameState gs, AppLocalizations l10n) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final primary = Theme.of(context).colorScheme.primary;
     final textSecondary =
@@ -97,7 +102,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         if (isActif)
                           Padding(
                             padding: const EdgeInsets.only(right: 6),
-                            child: Icon(Icons.play_arrow, size: 16, color: primary),
+                            child:
+                                Icon(Icons.play_arrow, size: 16, color: primary),
                           ),
                         Text(
                           j.nom,
@@ -108,7 +114,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                 : (isDark
                                     ? AppColors.darkTextPrimary
                                     : AppColors.lightTextPrimary),
-                            fontWeight: isActif ? FontWeight.w600 : FontWeight.normal,
+                            fontWeight:
+                                isActif ? FontWeight.w600 : FontWeight.normal,
                           ),
                         ),
                         const Spacer(),
@@ -127,16 +134,17 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         child: Wrap(
                           spacing: 6,
                           children: familleNames
-                              .map((name) => Chip(
-                                    label: Text(name,
-                                        style: AppTextStyles.inter(
-                                            fontSize: 11,
-                                            color: Colors.white)),
-                                    backgroundColor: AppColors.success,
-                                    padding: EdgeInsets.zero,
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                  ))
+                              .map(
+                                (name) => Chip(
+                                  label: Text(name,
+                                      style: AppTextStyles.inter(
+                                          fontSize: 11, color: Colors.white)),
+                                  backgroundColor: AppColors.success,
+                                  padding: EdgeInsets.zero,
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                              )
                               .toList(),
                         ),
                       ),
@@ -147,6 +155,26 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _animatedSection({required bool visible, required Widget child}) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 250),
+      transitionBuilder: (child, animation) => FadeTransition(
+        opacity: animation,
+        child: AnimatedBuilder(
+          animation: animation,
+          builder: (_, c) => Transform.translate(
+            offset: Offset(0, (1 - animation.value) * 20),
+            child: c,
+          ),
+          child: child,
+        ),
+      ),
+      child: visible
+          ? KeyedSubtree(key: const ValueKey(true), child: child)
+          : const SizedBox.shrink(),
     );
   }
 
@@ -228,35 +256,50 @@ class _GameScreenState extends ConsumerState<GameScreen> {
             ),
             const SizedBox(height: 20),
 
-            // SECTION 3 — Choisir un descripteur (visible si famille sélectionnée)
-            if (_selectedFamille != null) ...[
-              Text(
-                l10n.chooseDescriptor,
-                style: AppTextStyles.inter(fontSize: 12, color: textSecondary),
+            // SECTION 3 — Choisir un descripteur (animée)
+            _animatedSection(
+              visible: _selectedFamille != null,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.chooseDescriptor,
+                    style: AppTextStyles.inter(
+                        fontSize: 12, color: textSecondary),
+                  ),
+                  const SizedBox(height: 10),
+                  DescripteurSelectorWidget(
+                    descripteurs: descripteurs,
+                    descripteurSelectionne: _selectedDescripteur,
+                    onSelect: _onDescripteurSelected,
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
-              const SizedBox(height: 10),
-              DescripteurSelectorWidget(
-                descripteurs: descripteurs,
-                descripteurSelectionne: _selectedDescripteur,
-                onSelect: _onDescripteurSelected,
-              ),
-              const SizedBox(height: 20),
-            ],
+            ),
 
-            // SECTION 4 — Choisir un joueur (visible si famille + descripteur sélectionnés)
-            if (_selectedFamille != null && _selectedDescripteur != null) ...[
-              Text(
-                l10n.chooseTarget,
-                style: AppTextStyles.inter(fontSize: 12, color: textSecondary),
+            // SECTION 4 — Choisir un joueur (animée)
+            _animatedSection(
+              visible:
+                  _selectedFamille != null && _selectedDescripteur != null,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.chooseTarget,
+                    style: AppTextStyles.inter(
+                        fontSize: 12, color: textSecondary),
+                  ),
+                  const SizedBox(height: 10),
+                  JoueurSelectorWidget(
+                    joueurs: cibles,
+                    joueurSelectionne: _selectedCible,
+                    onSelect: _onCibleSelected,
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
-              const SizedBox(height: 10),
-              JoueurSelectorWidget(
-                joueurs: cibles,
-                joueurSelectionne: _selectedCible,
-                onSelect: _onCibleSelected,
-              ),
-              const SizedBox(height: 20),
-            ],
+            ),
 
             // BOUTON D'ACTION
             PrimaryButton(

@@ -244,4 +244,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String familiesCount(int count) {
     return '$count family(ies)';
   }
+
+  @override
+  String get distributing => 'Distributing cards...';
+
+  @override
+  String get skipAnimation => 'Skip';
+
+  @override
+  String get familyReveal => 'Family completed!';
+
+  @override
+  String get tapToReveal => 'Tap to reveal your card';
 }

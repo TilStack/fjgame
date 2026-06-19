@@ -1,14 +1,17 @@
 // Écran de configuration de la partie locale : saisie des noms de joueurs (3–6).
+// Après validation, affiche l'animation de distribution avant de naviguer.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../application/providers/game_provider.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../widgets/common/app_text_field.dart';
 import '../../widgets/common/primary_button.dart';
+import '../../widgets/game/distribution_animation_widget.dart';
 
 class LobbyLocalScreen extends ConsumerStatefulWidget {
   const LobbyLocalScreen({super.key});
@@ -67,9 +70,24 @@ class _LobbyLocalScreenState extends ConsumerState<LobbyLocalScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(state.erreur!)),
       );
-    } else {
-      context.go('/game/transition');
+      return;
     }
+
+    // Animation de distribution en overlay plein écran
+    if (!mounted) return;
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black87,
+      builder: (dialogContext) => DistributionAnimationWidget(
+        nombreJoueurs: noms.length,
+        nombreCartesTotal: 52,
+        onAnimationComplete: () => Navigator.of(dialogContext).pop(),
+      ),
+    );
+
+    if (!mounted) return;
+    context.go('/game/transition');
   }
 
   @override

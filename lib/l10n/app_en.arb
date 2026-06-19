@@ -109,5 +109,9 @@
     "placeholders": {
       "count": { "type": "int" }
     }
-  }
+  },
+  "distributing": "Distributing cards...",
+  "skipAnimation": "Skip",
+  "familyReveal": "Family completed!",
+  "tapToReveal": "Tap to reveal your card"
 }

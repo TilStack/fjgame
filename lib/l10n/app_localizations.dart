@@ -541,6 +541,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{count} famille(s)'**
   String familiesCount(int count);
+
+  /// No description provided for @distributing.
+  ///
+  /// In fr, this message translates to:
+  /// **'Distribution en cours...'**
+  String get distributing;
+
+  /// No description provided for @skipAnimation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Passer'**
+  String get skipAnimation;
+
+  /// No description provided for @familyReveal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Famille complétée !'**
+  String get familyReveal;
+
+  /// No description provided for @tapToReveal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Appuie pour voir ta carte'**
+  String get tapToReveal;
 }
 
 class _AppLocalizationsDelegate
