@@ -2,6 +2,7 @@
 // useMaterial3: true. Police titre Cinzel, corps Inter via Google Fonts.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 
@@ -181,4 +182,20 @@ abstract final class AppTheme {
           behavior: SnackBarBehavior.floating,
         ),
       );
+
+  static const AppBarTheme gameAppBarThemeLight = AppBarTheme(
+    backgroundColor: Colors.white,
+    foregroundColor: Color(0xFF1A1A1A),
+    elevation: 0,
+    surfaceTintColor: Colors.transparent,
+    systemOverlayStyle: SystemUiOverlayStyle.dark,
+  );
+
+  static const AppBarTheme gameAppBarThemeDark = AppBarTheme(
+    backgroundColor: Color(0xFF0D0D14),
+    foregroundColor: Color(0xFFE0E0E0),
+    elevation: 0,
+    surfaceTintColor: Colors.transparent,
+    systemOverlayStyle: SystemUiOverlayStyle.light,
+  );
 }
