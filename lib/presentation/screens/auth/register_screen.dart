@@ -21,12 +21,14 @@ class RegisterScreen extends ConsumerStatefulWidget {
 
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _pseudoCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
   final _confirmCtrl = TextEditingController();
 
   @override
   void dispose() {
+    _pseudoCtrl.dispose();
     _emailCtrl.dispose();
     _passwordCtrl.dispose();
     _confirmCtrl.dispose();
@@ -58,6 +60,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     await ref.read(authNotifierProvider.notifier).registerWithEmail(
           _emailCtrl.text.trim(),
           _passwordCtrl.text,
+          _pseudoCtrl.text.trim(),
         );
     if (!mounted) return;
     final state = ref.read(authNotifierProvider);
@@ -127,6 +130,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 style: AppTextStyles.cinzel(fontSize: 28, color: primary),
               ),
               const SizedBox(height: 32),
+              AppTextField(
+                controller: _pseudoCtrl,
+                labelText: 'Pseudo',
+                prefixIcon: Icons.person_outlined,
+                validator: (v) {
+                  if (v == null || v.trim().isEmpty) return 'Pseudo requis';
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
               AppTextField(
                 controller: _emailCtrl,
                 labelText: l10n.email,

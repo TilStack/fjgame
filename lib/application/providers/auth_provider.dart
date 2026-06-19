@@ -2,6 +2,7 @@
 // Écoute FirebaseAuth.authStateChanges() pour maintenir l'état synchronisé.
 // Les messages d'erreur sont des clés ARB, jamais des strings brutes.
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../core/utils/firebase_error_mapper.dart';
@@ -56,13 +57,30 @@ class AuthNotifier extends _$AuthNotifier {
     }
   }
 
-  Future<void> registerWithEmail(String email, String password) async {
+  Future<void> registerWithEmail(
+      String email, String password, String pseudo) async {
     state = const AuthState(status: AuthStatus.loading);
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      final colors = [
+        '#FF1744', '#1E88E5', '#43A047', '#FB8C00', '#8E24AA', '#00ACC1',
+      ];
+      final avatarColor = colors[DateTime.now().millisecondsSinceEpoch % 6];
+
+      final cred = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      await cred.user?.updateDisplayName(pseudo);
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(cred.user!.uid)
+          .set({
+        'uid': cred.user!.uid,
+        'pseudo': pseudo,
+        'email': email,
+        'createdAt': FieldValue.serverTimestamp(),
+        'avatarColor': avatarColor,
+      });
     } on FirebaseAuthException catch (e) {
       state = AuthState(
         status: AuthStatus.error,
