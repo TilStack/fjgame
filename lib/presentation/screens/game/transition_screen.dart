@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../application/providers/game_provider.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../widgets/common/primary_button.dart';
 
@@ -50,62 +51,70 @@ class _TransitionScreenState extends ConsumerState<TransitionScreen> {
     }
 
     final nomJoueur = gameState.gameState!.joueurActif.nom;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return PopScope(
-      canPop: false,
-      child: Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Icon(Icons.smartphone, size: 72, color: primary),
-                const SizedBox(height: 32),
-                Text(
-                  l10n.passPhone,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.cinzel(fontSize: 22, color: primary),
-                ),
-                const SizedBox(height: 12),
-
-                // Nom du joueur avec FadeIn
-                AnimatedOpacity(
-                  opacity: _nameVisible || reduceMotion ? 1.0 : 0.0,
-                  duration: animDuration,
-                  child: Text(
-                    nomJoueur,
+    return Theme(
+      data: Theme.of(context).copyWith(
+        appBarTheme: isDark
+            ? AppTheme.gameAppBarThemeDark
+            : AppTheme.gameAppBarThemeLight,
+      ),
+      child: PopScope(
+        canPop: false,
+        child: Scaffold(
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Icon(Icons.smartphone, size: 72, color: primary),
+                  const SizedBox(height: 32),
+                  Text(
+                    l10n.passPhone,
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.cinzel(
-                      fontSize: 32,
-                      color: primary,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: AppTextStyles.cinzel(fontSize: 22, color: primary),
                   ),
-                ),
-                const SizedBox(height: 48),
+                  const SizedBox(height: 12),
 
-                // Bouton avec SlideIn depuis le bas
-                AnimatedSlide(
-                  offset: _buttonVisible || reduceMotion
-                      ? Offset.zero
-                      : const Offset(0, 0.4),
-                  duration: animDuration,
-                  curve: Curves.easeOutCubic,
-                  child: AnimatedOpacity(
-                    opacity: _buttonVisible || reduceMotion ? 1.0 : 0.0,
+                  // Nom du joueur avec FadeIn
+                  AnimatedOpacity(
+                    opacity: _nameVisible || reduceMotion ? 1.0 : 0.0,
                     duration: animDuration,
-                    child: PrimaryButton(
-                      label: l10n.iAmReady,
-                      onPressed: () {
-                        ref.read(gameNotifierProvider.notifier).joueurPret();
-                        context.go('/game/play');
-                      },
+                    child: Text(
+                      nomJoueur,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.cinzel(
+                        fontSize: 32,
+                        color: primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 48),
+
+                  // Bouton avec SlideIn depuis le bas
+                  AnimatedSlide(
+                    offset: _buttonVisible || reduceMotion
+                        ? Offset.zero
+                        : const Offset(0, 0.4),
+                    duration: animDuration,
+                    curve: Curves.easeOutCubic,
+                    child: AnimatedOpacity(
+                      opacity: _buttonVisible || reduceMotion ? 1.0 : 0.0,
+                      duration: animDuration,
+                      child: PrimaryButton(
+                        label: l10n.iAmReady,
+                        onPressed: () {
+                          ref.read(gameNotifierProvider.notifier).joueurPret();
+                          context.go('/game/play');
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

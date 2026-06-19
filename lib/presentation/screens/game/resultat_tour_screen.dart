@@ -13,6 +13,7 @@ import 'package:go_router/go_router.dart';
 import '../../../application/providers/game_provider.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../domain/models/famille.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../widgets/common/primary_button.dart';
@@ -188,10 +189,16 @@ class _ResultatTourScreenState extends ConsumerState<ResultatTourScreen>
           .nom;
     }
 
-    return PopScope(
-      canPop: false,
-      child: Scaffold(
-        body: SafeArea(
+    return Theme(
+      data: Theme.of(context).copyWith(
+        appBarTheme: isDark
+            ? AppTheme.gameAppBarThemeDark
+            : AppTheme.gameAppBarThemeLight,
+      ),
+      child: PopScope(
+        canPop: false,
+        child: Scaffold(
+          body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
             child: Stack(
@@ -347,6 +354,7 @@ class _ResultatTourScreenState extends ConsumerState<ResultatTourScreen>
           ),
         ),
       ),
+    ),
     );
   }
 }

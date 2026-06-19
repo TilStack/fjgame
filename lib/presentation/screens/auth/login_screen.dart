@@ -6,7 +6,6 @@ import 'package:fjgame/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../application/providers/auth_provider.dart';
-import '../../../application/providers/locale_provider.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../widgets/common/app_text_field.dart';
@@ -82,9 +81,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textSecondary =
         isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
-    final themeMode = ref.watch(themeNotifierProvider);
-    final locale = ref.watch(localeNotifierProvider);
-
     ref.listen(authNotifierProvider, (_, next) {
       if (next.status == AuthStatus.authenticated) {
         context.go('/home');
@@ -95,31 +91,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        actions: [
-          TextButton(
-            onPressed: () => ref.read(localeNotifierProvider.notifier).setLocale(
-                  locale.languageCode == 'fr'
-                      ? const Locale('en')
-                      : const Locale('fr'),
-                ),
-            child: Text(
-              locale.languageCode == 'fr' ? 'EN' : 'FR',
-              style: AppTextStyles.inter(fontSize: 14, color: primary),
-            ),
-          ),
-          IconButton(
-            icon: Icon(
-              themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,
-            ),
-            color: primary,
-            onPressed: () =>
-                ref.read(themeNotifierProvider.notifier).setTheme(
-                      themeMode == ThemeMode.dark
-                          ? ThemeMode.light
-                          : ThemeMode.dark,
-                    ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -157,6 +128,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   if (v == null || v.isEmpty) return l10n.passwordRequired;
                   return null;
                 },
+              ),
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerRight,
+                child: GestureDetector(
+                  onTap: () => context.go('/forgot-password'),
+                  child: Text(
+                    l10n.forgotPassword,
+                    style: AppTextStyles.inter(fontSize: 12, color: primary),
+                  ),
+                ),
               ),
               const SizedBox(height: 24),
               PrimaryButton(

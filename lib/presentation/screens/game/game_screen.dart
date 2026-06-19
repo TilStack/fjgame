@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import '../../../application/providers/game_provider.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../domain/models/famille.dart';
 import '../../../domain/models/game_state.dart';
 import '../../../l10n/app_localizations.dart';
@@ -203,9 +204,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         _selectedDescripteur != null &&
         _selectedCible != null;
 
-    return PopScope(
-      canPop: false,
-      child: Scaffold(
+    return Theme(
+      data: Theme.of(context).copyWith(
+        appBarTheme: isDark
+            ? AppTheme.gameAppBarThemeDark
+            : AppTheme.gameAppBarThemeLight,
+      ),
+      child: PopScope(
+        canPop: false,
+        child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(
@@ -310,6 +317,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           ],
         ),
       ),
+    ),
     );
   }
 }

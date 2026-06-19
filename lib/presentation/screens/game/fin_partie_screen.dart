@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import '../../../application/providers/game_provider.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../widgets/common/primary_button.dart';
 
@@ -74,8 +75,14 @@ class _FinPartieScreenState extends ConsumerState<FinPartieScreen> {
       _rankVisible = List.filled(classement.length, true);
     }
 
-    return Scaffold(
-      appBar: AppBar(
+    return Theme(
+      data: Theme.of(context).copyWith(
+        appBarTheme: isDark
+            ? AppTheme.gameAppBarThemeDark
+            : AppTheme.gameAppBarThemeLight,
+      ),
+      child: Scaffold(
+        appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
           l10n.gameOver,
@@ -201,6 +208,7 @@ class _FinPartieScreenState extends ConsumerState<FinPartieScreen> {
           ),
         ],
       ),
+    ),
     );
   }
 }
