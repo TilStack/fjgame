@@ -98,6 +98,7 @@ class _LobbyLocalScreenState extends ConsumerState<LobbyLocalScreen> {
         isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
     final isLoading = ref.watch(gameNotifierProvider).isLoading;
     final canAdd = _controllers.length < 6;
+    final reduceMotion = MediaQuery.of(context).disableAnimations;
 
     return Theme(
       data: Theme.of(context).copyWith(
@@ -121,7 +122,7 @@ class _LobbyLocalScreenState extends ConsumerState<LobbyLocalScreen> {
             children: [
               Icon(Icons.group, size: 48, color: primary)
                   .animate()
-                  .fadeIn(duration: 300.ms),
+                  .fadeIn(duration: reduceMotion ? Duration.zero : 300.ms),
               const SizedBox(height: 16),
               Text(
                 l10n.players,
@@ -179,13 +180,13 @@ class _LobbyLocalScreenState extends ConsumerState<LobbyLocalScreen> {
                   )
                       .animate()
                       .fadeIn(
-                          duration: 250.ms,
-                          delay: Duration(milliseconds: 100 * i))
+                          duration: reduceMotion ? Duration.zero : 250.ms,
+                          delay: reduceMotion ? Duration.zero : Duration(milliseconds: 100 * i))
                       .slideY(
                           begin: 0.3,
                           end: 0,
-                          duration: 250.ms,
-                          delay: Duration(milliseconds: 100 * i)),
+                          duration: reduceMotion ? Duration.zero : 250.ms,
+                          delay: reduceMotion ? Duration.zero : Duration(milliseconds: 100 * i)),
                 );
               }),
 
@@ -207,7 +208,7 @@ class _LobbyLocalScreenState extends ConsumerState<LobbyLocalScreen> {
                       ),
                     ],
                   ),
-                ).animate().fadeIn(duration: 200.ms),
+                ).animate().fadeIn(duration: reduceMotion ? Duration.zero : 200.ms),
 
               const SizedBox(height: 24),
               PrimaryButton(
