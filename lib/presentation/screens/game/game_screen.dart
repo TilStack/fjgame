@@ -161,8 +161,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   }
 
   Widget _animatedSection({required bool visible, required Widget child}) {
+    final reduce = MediaQuery.of(context).disableAnimations;
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 250),
+      duration: reduce ? Duration.zero : const Duration(milliseconds: 250),
       transitionBuilder: (child, animation) => FadeTransition(
         opacity: animation,
         child: AnimatedBuilder(
