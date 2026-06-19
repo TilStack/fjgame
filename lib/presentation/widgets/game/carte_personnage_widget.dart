@@ -6,8 +6,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../domain/models/famille.dart';
@@ -330,8 +328,8 @@ class _CartePersonnageWidgetState extends State<CartePersonnageWidget>
       height: 280,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: SvgPicture.asset(
-          'assets/images/card_back_placeholder.svg',
+        child: Image.asset(
+          'assets/images/card_back.png',
           width: 200,
           height: 280,
           fit: BoxFit.cover,
