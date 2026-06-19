@@ -8,12 +8,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'application/providers/locale_provider.dart';
 import 'core/router/app_router.dart';
+import 'core/services/sound_service.dart';
 import 'core/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
   await Firebase.initializeApp();
+  await SoundService.instance.init();
   runApp(const ProviderScope(child: FjGameApp()));
 }
 
