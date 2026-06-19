@@ -1,8 +1,9 @@
 // Écran principal du tour : le joueur actif consulte sa main et formule sa demande.
-// Sections 3 et 4 apparaissent avec FadeIn + SlideIn quand elles deviennent visibles.
+// Sections 2 et 3 apparaissent avec FadeIn + SlideIn quand elles deviennent visibles.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../application/providers/game_provider.dart';
@@ -13,10 +14,9 @@ import '../../../domain/models/famille.dart';
 import '../../../domain/models/game_state.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../widgets/common/primary_button.dart';
-import '../../widgets/game/carte_personnage_widget.dart';
-import '../../widgets/game/descripteur_selector_widget.dart';
 import '../../widgets/game/famille_selector_widget.dart';
 import '../../widgets/game/joueur_selector_widget.dart';
+import '../../widgets/game/player_hand_grid_widget.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
   const GameScreen({super.key});
@@ -41,6 +41,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   void _onDescripteurSelected(Descripteur d) {
     setState(() {
       _selectedDescripteur = d;
+      _selectedFamille = null;
       _selectedCible = null;
     });
   }
@@ -196,9 +197,6 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     final gs = gameNotifier.gameState!;
     final joueurActif = gs.joueurActif;
     final familles = gs.famillesDisponiblesPourJoueur(joueurActif.id);
-    final descripteurs = _selectedFamille != null
-        ? gs.descriptionsClesPourJoueur(joueurActif.id, _selectedFamille!.id)
-        : <Descripteur>[];
     final cibles = gs.ciblesValides;
     final canAsk = _selectedFamille != null &&
         _selectedDescripteur != null &&
@@ -212,112 +210,110 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       ),
       child: PopScope(
         canPop: false,
-        child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text(
-            joueurActif.nom,
-            style: AppTextStyles.cinzel(fontSize: 18, color: Colors.white),
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.leaderboard),
-              tooltip: l10n.scores,
-              onPressed: () => _showScoresSheet(context, gs, l10n),
-            ),
-          ],
-        ),
-        body: ListView(
-          padding: const EdgeInsets.all(20),
+        child: Stack(
           children: [
-            // SECTION 1 — Ma main
-            Text(
-              l10n.myHand,
-              style: AppTextStyles.inter(fontSize: 14, color: textSecondary),
-            ),
-            const SizedBox(height: 10),
-            ...joueurActif.main.map((p) {
-              final fam = gs.toutesLesFamilles
-                  .firstWhere((f) => f.id == p.familleId);
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: CartePersonnageWidget(
-                  personnage: p,
-                  famille: fam,
-                  isSelected: _selectedFamille?.id == p.familleId,
+            Positioned.fill(
+              child: Opacity(
+                opacity: 0.06,
+                child: SvgPicture.asset(
+                  'assets/images/game_bg_pattern.svg',
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    Theme.of(context).colorScheme.primary,
+                    BlendMode.srcIn,
+                  ),
                 ),
-              );
-            }),
-            const SizedBox(height: 20),
-
-            // SECTION 2 — Choisir une famille
-            Text(
-              l10n.chooseFamily,
-              style: AppTextStyles.inter(fontSize: 14, color: textSecondary),
+              ),
             ),
-            const SizedBox(height: 10),
-            FamilleSelectorWidget(
-              familles: familles,
-              familleSelectee: _selectedFamille,
-              onSelect: _onFamilleSelected,
-            ),
-            const SizedBox(height: 20),
-
-            // SECTION 3 — Choisir un descripteur (animée)
-            _animatedSection(
-              visible: _selectedFamille != null,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                title: Text(
+                  joueurActif.nom,
+                  style: AppTextStyles.cinzel(fontSize: 18, color: Colors.white),
+                ),
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.leaderboard),
+                    tooltip: l10n.scores,
+                    onPressed: () => _showScoresSheet(context, gs, l10n),
+                  ),
+                ],
+              ),
+              body: ListView(
+                padding: const EdgeInsets.all(20),
                 children: [
+                  // SECTION 1 — Ma main
                   Text(
-                    l10n.chooseDescriptor,
-                    style: AppTextStyles.inter(
-                        fontSize: 12, color: textSecondary),
+                    l10n.myHand,
+                    style: AppTextStyles.inter(fontSize: 14, color: textSecondary),
                   ),
                   const SizedBox(height: 10),
-                  DescripteurSelectorWidget(
-                    descripteurs: descripteurs,
-                    descripteurSelectionne: _selectedDescripteur,
-                    onSelect: _onDescripteurSelected,
+                  PlayerHandGridWidget(
+                    personnages: joueurActif.main,
+                    familles: gs.toutesLesFamilles,
+                    onDescripteurSelected: _onDescripteurSelected,
+                  ),
+                  const SizedBox(height: 20),
+
+                  // SECTION 2 — Choisir une famille (animée)
+                  _animatedSection(
+                    visible: _selectedDescripteur != null,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.chooseFamily,
+                          style: AppTextStyles.inter(
+                              fontSize: 14, color: textSecondary),
+                        ),
+                        const SizedBox(height: 10),
+                        FamilleSelectorWidget(
+                          familles: familles,
+                          familleSelectee: _selectedFamille,
+                          onSelect: _onFamilleSelected,
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+                  ),
+
+                  // SECTION 3 — Choisir un joueur (animée)
+                  _animatedSection(
+                    visible:
+                        _selectedFamille != null && _selectedDescripteur != null,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.chooseTarget,
+                          style: AppTextStyles.inter(
+                              fontSize: 12, color: textSecondary),
+                        ),
+                        const SizedBox(height: 10),
+                        JoueurSelectorWidget(
+                          joueurs: cibles,
+                          joueurSelectionne: _selectedCible,
+                          onSelect: _onCibleSelected,
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+                  ),
+
+                  // BOUTON D'ACTION
+                  PrimaryButton(
+                    label: l10n.askButton,
+                    onPressed: canAsk ? _ask : null,
                   ),
                   const SizedBox(height: 20),
                 ],
               ),
             ),
-
-            // SECTION 4 — Choisir un joueur (animée)
-            _animatedSection(
-              visible:
-                  _selectedFamille != null && _selectedDescripteur != null,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.chooseTarget,
-                    style: AppTextStyles.inter(
-                        fontSize: 12, color: textSecondary),
-                  ),
-                  const SizedBox(height: 10),
-                  JoueurSelectorWidget(
-                    joueurs: cibles,
-                    joueurSelectionne: _selectedCible,
-                    onSelect: _onCibleSelected,
-                  ),
-                  const SizedBox(height: 20),
-                ],
-              ),
-            ),
-
-            // BOUTON D'ACTION
-            PrimaryButton(
-              label: l10n.askButton,
-              onPressed: canAsk ? _ask : null,
-            ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
-    ),
     );
   }
 }
