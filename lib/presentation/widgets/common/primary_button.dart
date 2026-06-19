@@ -5,6 +5,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../../core/services/sound_service.dart';
+
 enum PrimaryButtonVariant { filled, outlined }
 
 class PrimaryButton extends StatelessWidget {
@@ -30,7 +32,12 @@ class PrimaryButton extends StatelessWidget {
 
     final button = switch (variant) {
       PrimaryButtonVariant.filled => FilledButton(
-          onPressed: isDisabled ? null : onPressed,
+          onPressed: isDisabled
+              ? null
+              : () {
+                  SoundService.instance.playButtonTap();
+                  onPressed!();
+                },
           style: FilledButton.styleFrom(
             backgroundColor: primary,
             foregroundColor: Colors.white,
@@ -42,7 +49,12 @@ class PrimaryButton extends StatelessWidget {
           child: child,
         ),
       PrimaryButtonVariant.outlined => OutlinedButton(
-          onPressed: isDisabled ? null : onPressed,
+          onPressed: isDisabled
+              ? null
+              : () {
+                  SoundService.instance.playButtonTap();
+                  onPressed!();
+                },
           style: OutlinedButton.styleFrom(
             foregroundColor: primary,
             side: BorderSide(color: primary, width: 1.5),

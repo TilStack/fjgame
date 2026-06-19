@@ -3,6 +3,7 @@
 // Animation : FadeIn du nom (300ms), SlideIn du bouton (600ms).
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -69,7 +70,22 @@ class _TransitionScreenState extends ConsumerState<TransitionScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Icon(Icons.smartphone, size: 72, color: primary),
+                  Center(
+                    child: SizedBox(
+                      width: 80,
+                      height: 80,
+                      child: CustomPaint(
+                        painter: _CrossCirclePainter(
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                    )
+                    .animate(onPlay: (c) => c.repeat(reverse: true))
+                    .scale(
+                      begin: const Offset(1.0, 1.0),
+                      end: const Offset(1.1, 1.1),
+                      duration: reduceMotion ? Duration.zero : 2.seconds,
+                    ),
+                  ),
                   const SizedBox(height: 32),
                   Text(
                     l10n.passPhone,
@@ -121,4 +137,29 @@ class _TransitionScreenState extends ConsumerState<TransitionScreen> {
       ),
     );
   }
+}
+
+class _CrossCirclePainter extends CustomPainter {
+  const _CrossCirclePainter({required this.color});
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.5;
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2 - 4;
+    canvas.drawCircle(center, radius, paint);
+    final arm = radius * 0.45;
+    paint.style = PaintingStyle.fill;
+    canvas.drawRect(
+        Rect.fromCenter(center: center, width: 3, height: arm * 2), paint);
+    canvas.drawRect(
+        Rect.fromCenter(center: center, width: arm * 2, height: 3), paint);
+  }
+
+  @override
+  bool shouldRepaint(_CrossCirclePainter old) => old.color != color;
 }

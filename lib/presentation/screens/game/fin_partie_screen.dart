@@ -2,12 +2,14 @@
 // Rang 1 : délai 0ms, rang 2 : 150ms, rang 3 : 300ms, etc.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../application/providers/game_provider.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/services/sound_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../widgets/common/primary_button.dart';
@@ -20,32 +22,39 @@ class FinPartieScreen extends ConsumerStatefulWidget {
 }
 
 class _FinPartieScreenState extends ConsumerState<FinPartieScreen> {
-  List<bool> _rankVisible = [];
-
   @override
   void initState() {
     super.initState();
-    final classement = ref.read(gameNotifierProvider).classement;
-    _rankVisible = List.filled(classement.length, false);
-
-    for (var i = 0; i < classement.length; i++) {
-      Future.delayed(Duration(milliseconds: i * 150), () {
-        if (mounted) setState(() => _rankVisible[i] = true);
-      });
-    }
+    SoundService.instance.playGameWin();
   }
 
-  String _medal(int rank) {
-    switch (rank) {
-      case 0:
-        return '🥇';
-      case 1:
-        return '🥈';
-      case 2:
-        return '🥉';
-      default:
-        return '${rank + 1}.';
+  Widget _rankBadge(int rank, Color textSecondary) {
+    const colors = [
+      Color(0xFFFFB300), // or
+      Color(0xFF9E9E9E), // argent
+      Color(0xFFBF6E3A), // bronze
+    ];
+    if (rank < 3) {
+      return Container(
+        width: 32,
+        height: 32,
+        decoration: BoxDecoration(
+            color: colors[rank], shape: BoxShape.circle),
+        child: Center(
+          child: Text(
+            '${rank + 1}',
+            style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
     }
+    return Text(
+      '${rank + 1}.',
+      style: AppTextStyles.inter(fontSize: 16, color: textSecondary),
+    );
   }
 
   @override
@@ -57,9 +66,6 @@ class _FinPartieScreenState extends ConsumerState<FinPartieScreen> {
     final textSecondary =
         isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
     final reduceMotion = MediaQuery.of(context).disableAnimations;
-    final animDuration = reduceMotion
-        ? Duration.zero
-        : const Duration(milliseconds: 350);
 
     if (gameNotifier.gameState == null) {
       WidgetsBinding.instance.addPostFrameCallback(
@@ -69,11 +75,6 @@ class _FinPartieScreenState extends ConsumerState<FinPartieScreen> {
 
     final gs = gameNotifier.gameState!;
     final classement = gameNotifier.classement;
-
-    // Synchronise _rankVisible si le classement change de taille (sécurité)
-    if (_rankVisible.length != classement.length) {
-      _rankVisible = List.filled(classement.length, true);
-    }
 
     return Theme(
       data: Theme.of(context).copyWith(
@@ -108,85 +109,82 @@ class _FinPartieScreenState extends ConsumerState<FinPartieScreen> {
                   .nom;
             }).toList();
 
-            final isVisible =
-                rank < _rankVisible.length ? _rankVisible[rank] : true;
-
-            return AnimatedOpacity(
-              opacity: isVisible ? 1.0 : 0.0,
-              duration: animDuration,
-              child: AnimatedSlide(
-                offset: isVisible ? Offset.zero : const Offset(0.15, 0),
-                duration: animDuration,
-                curve: Curves.easeOutCubic,
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: rank == 0
-                          ? const Color(0xFFFFD700)
-                          : (isDark
-                              ? AppColors.darkBorder
-                              : AppColors.lightBorder),
-                      width: rank == 0 ? 2 : 1,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            _medal(rank),
-                            style: const TextStyle(fontSize: 22),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              joueur.nom,
-                              style: AppTextStyles.inter(
-                                fontSize: 16,
-                                color: primary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            l10n.familiesCount(score),
-                            style: AppTextStyles.inter(
-                              fontSize: 14,
-                              color: textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (familleNames.isNotEmpty) ...[
-                        const SizedBox(height: 10),
-                        Wrap(
-                          spacing: 6,
-                          runSpacing: 4,
-                          children: familleNames
-                              .map(
-                                (name) => Chip(
-                                  label: Text(
-                                    name,
-                                    style: AppTextStyles.inter(
-                                        fontSize: 11, color: Colors.white),
-                                  ),
-                                  backgroundColor: AppColors.success,
-                                  padding: EdgeInsets.zero,
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ],
-                    ],
-                  ),
+            return Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: rank == 0
+                      ? const Color(0xFFFFD700)
+                      : (isDark
+                          ? AppColors.darkBorder
+                          : AppColors.lightBorder),
+                  width: rank == 0 ? 2 : 1,
                 ),
               ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      _rankBadge(rank, textSecondary),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          joueur.nom,
+                          style: AppTextStyles.inter(
+                            fontSize: 16,
+                            color: primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        l10n.familiesCount(score),
+                        style: AppTextStyles.inter(
+                          fontSize: 14,
+                          color: textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (familleNames.isNotEmpty) ...[
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 4,
+                      children: familleNames
+                          .map(
+                            (name) => Chip(
+                              label: Text(
+                                name,
+                                style: AppTextStyles.inter(
+                                    fontSize: 11, color: Colors.white),
+                              ),
+                              backgroundColor: AppColors.success,
+                              padding: EdgeInsets.zero,
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ],
+                ],
+              ),
+            )
+            .animate()
+            .slideX(
+              begin: 40,
+              end: 0,
+              delay: Duration(milliseconds: 150 * rank),
+              duration: reduceMotion ? Duration.zero : 350.ms,
+              curve: Curves.easeOutCubic,
+            )
+            .fadeIn(
+              delay: Duration(milliseconds: 150 * rank),
+              duration: reduceMotion ? Duration.zero : 350.ms,
             );
           }),
           const SizedBox(height: 40),

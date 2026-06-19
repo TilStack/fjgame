@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fjgame/l10n/app_localizations.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../application/providers/auth_provider.dart';
@@ -57,6 +58,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     final textSecondary =
         isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
     final l10n = AppLocalizations.of(context)!;
+    final reduceMotion = MediaQuery.of(context).disableAnimations;
 
     ref.listen(authNotifierProvider, (_, next) {
       if (_minDelayElapsed &&
@@ -78,11 +80,24 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                 color: primary,
                 fontWeight: FontWeight.bold,
               ),
+            )
+            .animate()
+            .fadeIn(duration: reduceMotion ? Duration.zero : 600.ms)
+            .scale(
+              begin: const Offset(0.85, 0.85),
+              end: const Offset(1.0, 1.0),
+              duration: reduceMotion ? Duration.zero : 600.ms,
+              curve: Curves.easeOut,
             ),
             const SizedBox(height: 8),
             Text(
               l10n.tagline,
               style: AppTextStyles.inter(fontSize: 14, color: textSecondary),
+            )
+            .animate()
+            .fadeIn(
+              duration: reduceMotion ? Duration.zero : 400.ms,
+              delay: reduceMotion ? Duration.zero : 300.ms,
             ),
             const SizedBox(height: 32),
             CircularProgressIndicator(color: primary, strokeWidth: 2),

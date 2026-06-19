@@ -7,16 +7,17 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../application/providers/game_provider.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/services/sound_service.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../domain/models/famille.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../widgets/common/primary_button.dart';
+import '../../widgets/game/carte_mini_widget.dart';
 import '../../widgets/game/carte_personnage_widget.dart';
 
 class ResultatTourScreen extends ConsumerStatefulWidget {
@@ -103,10 +104,12 @@ class _ResultatTourScreenState extends ConsumerState<ResultatTourScreen>
       if (!mounted) return;
       if (succes) {
         _cardController.forward();
+        SoundService.instance.playSuccess();
         if (hasFamille) {
           Future.delayed(const Duration(milliseconds: 800), () {
             if (mounted) {
               setState(() => _showFan = true);
+              SoundService.instance.playFamilyComplete();
               _fanController.forward().whenComplete(() {
                 if (mounted) setState(() => _showFan = false);
               });
@@ -115,6 +118,7 @@ class _ResultatTourScreenState extends ConsumerState<ResultatTourScreen>
         }
       } else {
         _shakeController.forward();
+        SoundService.instance.playFail();
       }
       Future.delayed(Duration(milliseconds: succes ? 600 : 500), () {
         if (mounted) setState(() => _showContinueButton = true);
@@ -334,13 +338,19 @@ class _ResultatTourScreenState extends ConsumerState<ResultatTourScreen>
                           child: Stack(
                             alignment: Alignment.center,
                             children: List.generate(4, (i) {
-                              final angle = (-0.3 + i * 0.2);
+                              final angle = -0.3 + i * 0.2;
+                              final p = gs.toutesLesFamilles
+                                  .expand((f) => f.personnages)
+                                  .first;
                               return Transform.rotate(
                                 angle: angle,
-                                child: SvgPicture.asset(
-                                  'assets/images/card_back_placeholder.svg',
+                                child: SizedBox(
                                   width: 90,
                                   height: 126,
+                                  child: CarteMiniWidget(
+                                    personnage: p,
+                                    famille: gs.toutesLesFamilles.first,
+                                  ),
                                 ),
                               );
                             }),

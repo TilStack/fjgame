@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/services/sound_service.dart';
 import '../../../l10n/app_localizations.dart';
 
 class DistributionAnimationWidget extends StatefulWidget {
@@ -51,6 +52,8 @@ class _DistributionAnimationWidgetState
         widget.onAnimationComplete();
       }
     });
+
+    SoundService.instance.playCardDeal();
 
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) setState(() => _showSkip = true);
