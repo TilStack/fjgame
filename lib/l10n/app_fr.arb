@@ -131,5 +131,29 @@
   "tapCard": "Appuie sur une carte pour la voir",
   "soundOn": "Sons activés",
   "soundOff": "Sons désactivés",
-  "closeCard": "Appuie pour fermer"
+  "closeCard": "Appuie pour fermer",
+  "onlineSubtitle": "Jouez avec vos amis où que vous soyez",
+  "createRoomHint": "Créez une salle et partagez le code",
+  "joinRoomHint": "Entrez le code reçu par un ami",
+  "roomCode": "Code de la partie",
+  "copyCode": "Copier le code",
+  "codeCopied": "Code copié",
+  "waitingForPlayers": "En attente de joueurs",
+  "allReady": "Tous prêts",
+  "waitingForHost": "En attente de l'hôte",
+  "otherPlayerTurn": "C'est le tour de {name}",
+  "@otherPlayerTurn": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "yourTurnOnline": "C'est ton tour",
+  "spectatorMode": "Mode spectateur",
+  "lastAction": "Dernière action",
+  "submitMove": "Demander",
+  "roomFull": "Cette salle est complète",
+  "roomNotFound": "Code invalide ou salle introuvable",
+  "gameAlreadyStarted": "Cette partie a déjà commencé",
+  "leaveRoom": "Quitter la salle",
+  "leaveConfirm": "Voulez-vous vraiment quitter la partie ?"
 }

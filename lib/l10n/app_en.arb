@@ -131,5 +131,29 @@
   "tapCard": "Tap a card to see it",
   "soundOn": "Sounds enabled",
   "soundOff": "Sounds disabled",
-  "closeCard": "Tap to close"
+  "closeCard": "Tap to close",
+  "onlineSubtitle": "Play with your friends wherever you are",
+  "createRoomHint": "Create a room and share the code",
+  "joinRoomHint": "Enter the code received from a friend",
+  "roomCode": "Room code",
+  "copyCode": "Copy code",
+  "codeCopied": "Code copied",
+  "waitingForPlayers": "Waiting for players",
+  "allReady": "All ready",
+  "waitingForHost": "Waiting for host",
+  "otherPlayerTurn": "It's {name}'s turn",
+  "@otherPlayerTurn": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "yourTurnOnline": "It's your turn",
+  "spectatorMode": "Spectator mode",
+  "lastAction": "Last action",
+  "submitMove": "Ask",
+  "roomFull": "This room is full",
+  "roomNotFound": "Invalid code or room not found",
+  "gameAlreadyStarted": "This game has already started",
+  "leaveRoom": "Leave room",
+  "leaveConfirm": "Do you really want to leave the game?"
 }

@@ -276,7 +276,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get forgotPassword => 'Mot de passe oublié ?';
 
   @override
-  String get forgotPasswordExplain => 'Entrez votre adresse e-mail, nous vous enverrons un lien pour réinitialiser votre mot de passe';
+  String get forgotPasswordExplain =>
+      'Entrez votre adresse e-mail, nous vous enverrons un lien pour réinitialiser votre mot de passe';
 
   @override
   String get sendResetLink => 'Envoyer le lien';
