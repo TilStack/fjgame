@@ -103,7 +103,7 @@ class OnlineGameState {
     required this.currentPlayerIndex,
     required this.etape,
     required this.completedFamilies,
-    required this.lastAction,
+    this.lastAction,
     required this.scores,
     required this.updatedAt,
   });
