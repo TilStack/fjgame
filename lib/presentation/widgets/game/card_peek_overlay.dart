@@ -220,8 +220,16 @@ class _CardPeekDialogState extends State<_CardPeekDialog>
         isDark ? AppColors.darkCardSurface : AppColors.cardParchment;
     final textSecondary =
         isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
-    final identifiant =
-        widget.famille.descripteurIdentifiantDe(widget.personnage);
+    final identifiantList = widget.famille.descripteurs
+        .where((d) => d.id == widget.personnage.descripteurIdentifiantId)
+        .toList();
+    if (identifiantList.isEmpty) {
+      return Container(
+        color: cardSurface,
+        child: const Center(child: Icon(Icons.error_outline)),
+      );
+    }
+    final identifiant = identifiantList.first;
 
     return Container(
       color: cardSurface,

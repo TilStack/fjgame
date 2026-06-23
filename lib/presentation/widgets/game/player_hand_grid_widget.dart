@@ -40,7 +40,9 @@ class _PlayerHandGridWidgetState extends State<PlayerHandGridWidget> {
       itemCount: widget.personnages.length,
       itemBuilder: (context, i) {
         final p = widget.personnages[i];
-        final famille = widget.familles.firstWhere((f) => f.id == p.familleId);
+        final familleMatch = widget.familles.where((f) => f.id == p.familleId).toList();
+        if (familleMatch.isEmpty) return const SizedBox.shrink();
+        final famille = familleMatch.first;
         _keys[i] ??= GlobalKey();
 
         return CarteMiniWidget(

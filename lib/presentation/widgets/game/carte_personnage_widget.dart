@@ -152,8 +152,11 @@ class _CartePersonnageWidgetState extends State<CartePersonnageWidget>
     Color textPrimary,
     Color borderColor,
   ) {
-    final identifiant =
-        widget.famille.descripteurIdentifiantDe(widget.personnage);
+    final identifiantList = widget.famille.descripteurs
+        .where((d) => d.id == widget.personnage.descripteurIdentifiantId)
+        .toList();
+    if (identifiantList.isEmpty) return const SizedBox.shrink();
+    final identifiant = identifiantList.first;
     final cles = widget.famille.descriptionsClesDe(widget.personnage);
 
     return SizedBox(

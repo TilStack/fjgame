@@ -103,11 +103,15 @@ class _FinPartieScreenState extends ConsumerState<FinPartieScreen> {
             final rank = entry.key;
             final joueur = entry.value.key;
             final score = entry.value.value;
-            final familleNames = joueur.famillesGagnees.map((fid) {
-              return gs.toutesLesFamilles
-                  .firstWhere((f) => f.id == fid)
-                  .nom;
-            }).toList();
+            final familleNames = joueur.famillesGagnees
+                .map((fid) {
+                  final m = gs.toutesLesFamilles
+                      .where((f) => f.id == fid)
+                      .toList();
+                  return m.isEmpty ? null : m.first.nom;
+                })
+                .whereType<String>()
+                .toList();
 
             return Container(
               margin: const EdgeInsets.only(bottom: 16),

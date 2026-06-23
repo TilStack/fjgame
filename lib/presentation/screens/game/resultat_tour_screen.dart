@@ -184,13 +184,16 @@ class _ResultatTourScreenState extends ConsumerState<ResultatTourScreen>
 
     if (succes && resultat.carteTransferee != null) {
       carteGagnee = resultat.carteTransferee;
-      familleCarte = gs.toutesLesFamilles
-          .firstWhere((f) => f.id == carteGagnee!.familleId);
+      final famMatch = gs.toutesLesFamilles
+          .where((f) => f.id == carteGagnee!.familleId)
+          .toList();
+      familleCarte = famMatch.isEmpty ? null : famMatch.first;
     }
     if (resultat.famillePoseeId != null) {
-      nomFamilleCompletee = gs.toutesLesFamilles
-          .firstWhere((f) => f.id == resultat.famillePoseeId)
-          .nom;
+      final famMatch = gs.toutesLesFamilles
+          .where((f) => f.id == resultat.famillePoseeId)
+          .toList();
+      nomFamilleCompletee = famMatch.isEmpty ? null : famMatch.first.nom;
     }
 
     return Theme(
@@ -331,32 +334,37 @@ class _ResultatTourScreenState extends ConsumerState<ResultatTourScreen>
                   Center(
                     child: AnimatedBuilder(
                       animation: _fanController,
-                      builder: (context, _) => Opacity(
-                        opacity: _fanOpacity.value,
-                        child: Transform.scale(
-                          scale: _fanScale.value,
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: List.generate(4, (i) {
-                              final angle = -0.3 + i * 0.2;
-                              final p = gs.toutesLesFamilles
-                                  .expand((f) => f.personnages)
-                                  .first;
-                              return Transform.rotate(
-                                angle: angle,
-                                child: SizedBox(
-                                  width: 90,
-                                  height: 126,
-                                  child: CarteMiniWidget(
-                                    personnage: p,
-                                    famille: gs.toutesLesFamilles.first,
+                      builder: (context, _) {
+                        final fanFamilles = gs.toutesLesFamilles
+                            .where((f) => f.personnages.isNotEmpty)
+                            .toList();
+                        if (fanFamilles.isEmpty) return const SizedBox.shrink();
+                        final fanFamille = fanFamilles.first;
+                        final fanPersonnage = fanFamille.personnages.first;
+                        return Opacity(
+                          opacity: _fanOpacity.value,
+                          child: Transform.scale(
+                            scale: _fanScale.value,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: List.generate(4, (i) {
+                                final angle = -0.3 + i * 0.2;
+                                return Transform.rotate(
+                                  angle: angle,
+                                  child: SizedBox(
+                                    width: 90,
+                                    height: 126,
+                                    child: CarteMiniWidget(
+                                      personnage: fanPersonnage,
+                                      famille: fanFamille,
+                                    ),
                                   ),
-                                ),
-                              );
-                            }),
+                                );
+                              }),
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
                   ),
               ],
