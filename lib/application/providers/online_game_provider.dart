@@ -86,6 +86,8 @@ class OnlineGameNotifier extends _$OnlineGameNotifier {
   GameState? _localGameState;
   // Verrou pour éviter les appels resolveMove en double sur le même lastAction.
   bool _resolving = false;
+  // Timer pour l'affichage du résultat — annulé si on quitte la salle avant 2500ms.
+  Timer? _showResultTimer;
 
   @override
   OnlineGameNotifierState build() {
@@ -94,10 +96,14 @@ class OnlineGameNotifier extends _$OnlineGameNotifier {
       auth: FirebaseAuth.instance,
     );
     ref.onDispose(dispose);
+    // Charger les familles en arrière-plan dès la construction.
+    Future.microtask(_ensureFamilles);
     return const OnlineGameNotifierState();
   }
 
   void dispose() {
+    _showResultTimer?.cancel();
+    _showResultTimer = null;
     _roomSub?.cancel();
     _gameStateSub?.cancel();
     _handSub?.cancel();
@@ -110,6 +116,10 @@ class OnlineGameNotifier extends _$OnlineGameNotifier {
     final familles = await FamilleRepositoryImpl().chargerFamilles();
     state = state.copyWith(familles: familles);
   }
+
+  // Extrait la clé i18n d'une exception (ex: Exception('roomNotFound') → 'roomNotFound').
+  String _extractKey(Object e) =>
+      e is Exception ? e.toString().replaceFirst('Exception: ', '') : e.toString();
 
   // --- Actions publiques ---
 
@@ -131,7 +141,7 @@ class OnlineGameNotifier extends _$OnlineGameNotifier {
     } catch (e) {
       state = OnlineGameNotifierState(
         familles: state.familles,
-        erreur: e.toString(),
+        erreur: _extractKey(e),
       );
     }
   }
@@ -154,7 +164,7 @@ class OnlineGameNotifier extends _$OnlineGameNotifier {
     } catch (e) {
       state = OnlineGameNotifierState(
         familles: state.familles,
-        erreur: e.toString(),
+        erreur: _extractKey(e),
       );
     }
   }
@@ -165,7 +175,7 @@ class OnlineGameNotifier extends _$OnlineGameNotifier {
     try {
       await _repo.setReady(roomId, isReady);
     } catch (e) {
-      state = state.copyWith(erreur: e.toString());
+      state = state.copyWith(erreur: _extractKey(e));
     }
   }
 
@@ -177,7 +187,7 @@ class OnlineGameNotifier extends _$OnlineGameNotifier {
       // startGame retourne le GameState initialisé — utilisé par l'hôte pour resolveMove.
       _localGameState = await _repo.startGame(roomId, familles);
     } catch (e) {
-      state = state.copyWith(erreur: e.toString());
+      state = state.copyWith(erreur: _extractKey(e));
     }
   }
 
@@ -191,7 +201,7 @@ class OnlineGameNotifier extends _$OnlineGameNotifier {
     try {
       await _repo.submitMove(roomId, targetId, familyId, descripteurId);
     } catch (e) {
-      state = state.copyWith(erreur: e.toString());
+      state = state.copyWith(erreur: _extractKey(e));
     }
   }
 
@@ -236,6 +246,8 @@ class OnlineGameNotifier extends _$OnlineGameNotifier {
   }
 
   void _cancelSubscriptions() {
+    _showResultTimer?.cancel();
+    _showResultTimer = null;
     _roomSub?.cancel();
     _gameStateSub?.cancel();
     _handSub?.cancel();
@@ -282,13 +294,14 @@ class OnlineGameNotifier extends _$OnlineGameNotifier {
       return;
     }
 
-    // Move résolu : afficher le résultat pendant 2500ms.
+    // Move résolu : afficher le résultat pendant 2500ms puis reprendre le jeu.
     if (lastAction != null && lastAction['success'] != null) {
       state = state.copyWith(
         lastActionResult: lastAction,
         etape: OnlineEtape.showingResult,
       );
-      Future.delayed(const Duration(milliseconds: 2500), () {
+      _showResultTimer?.cancel();
+      _showResultTimer = Timer(const Duration(milliseconds: 2500), () {
         if (state.etape == OnlineEtape.showingResult) {
           _updateTurnEtape();
         }
@@ -347,7 +360,7 @@ class OnlineGameNotifier extends _$OnlineGameNotifier {
         }
       }
     } catch (e) {
-      state = state.copyWith(erreur: e.toString());
+      state = state.copyWith(erreur: _extractKey(e));
     } finally {
       _resolving = false;
     }
