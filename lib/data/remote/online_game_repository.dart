@@ -21,18 +21,23 @@ class OnlineGameRepository {
   })  : _firestore = firestore,
         _auth = auth;
 
-  String get _uid => _auth.currentUser!.uid;
-  String get _pseudo => _auth.currentUser!.displayName ?? 'Joueur';
+  // Fix #4 — helper that throws cleanly if no authenticated user.
+  User _requireUser() {
+    final user = _auth.currentUser;
+    if (user == null) throw Exception('notAuthenticated');
+    return user;
+  }
 
   CollectionReference get _rooms => _firestore.collection('rooms');
 
   // --- Création de salle ---
   Future<String> createRoom(int maxPlayers) async {
+    final user = _requireUser();
     final code = await _generateUniqueCode();
     final roomRef = _rooms.doc();
     final player = OnlinePlayer(
-      uid: _uid,
-      pseudo: _pseudo,
+      uid: user.uid,
+      pseudo: user.displayName ?? 'Joueur',
       avatarColor: _randomColor(),
       isReady: false,
       isHost: true,
@@ -40,8 +45,8 @@ class OnlineGameRepository {
     await roomRef.set({
       'roomCode': code,
       'status': RoomStatus.waiting.name,
-      'hostId': _uid,
-      'playerIds': [_uid],
+      'hostId': user.uid,
+      'playerIds': [user.uid],
       'players': [player.toMap()],
       'maxPlayers': maxPlayers,
       'createdAt': FieldValue.serverTimestamp(),
@@ -51,7 +56,10 @@ class OnlineGameRepository {
   }
 
   // --- Rejoindre une salle ---
+  // Fix #1 — use a transaction to avoid duplicate entries via arrayUnion on Maps.
   Future<String> joinRoom(String roomCode) async {
+    final user = _requireUser();
+
     final query = await _rooms
         .where('roomCode', isEqualTo: roomCode.toUpperCase())
         .limit(1)
@@ -59,38 +67,50 @@ class OnlineGameRepository {
 
     if (query.docs.isEmpty) throw Exception('roomNotFound');
 
-    final doc = query.docs.first;
-    final room = OnlineRoom.fromFirestore(doc);
+    final docRef = query.docs.first.reference;
+    final roomId = query.docs.first.id;
 
-    if (room.status != RoomStatus.waiting) throw Exception('gameAlreadyStarted');
-    if (room.playerIds.length >= room.maxPlayers) throw Exception('roomFull');
-    if (room.playerIds.contains(_uid)) return doc.id;
+    await _firestore.runTransaction((tx) async {
+      final snap = await tx.get(docRef);
+      final room = OnlineRoom.fromFirestore(snap);
 
-    final player = OnlinePlayer(
-      uid: _uid,
-      pseudo: _pseudo,
-      avatarColor: _randomColor(),
-      isReady: false,
-      isHost: false,
-    );
-    await doc.reference.update({
-      'playerIds': FieldValue.arrayUnion([_uid]),
-      'players': FieldValue.arrayUnion([player.toMap()]),
-      'updatedAt': FieldValue.serverTimestamp(),
+      if (room.status != RoomStatus.waiting) throw Exception('gameAlreadyStarted');
+      if (room.playerIds.length >= room.maxPlayers) throw Exception('roomFull');
+      // Already in room — nothing to do (transaction will still commit harmlessly).
+      if (room.playerIds.contains(user.uid)) return;
+
+      final player = OnlinePlayer(
+        uid: user.uid,
+        pseudo: user.displayName ?? 'Joueur',
+        avatarColor: _randomColor(),
+        isReady: false,
+        isHost: false,
+      );
+
+      final newPlayerIds = [...room.playerIds, user.uid];
+      final newPlayers = [...room.players.map((p) => p.toMap()), player.toMap()];
+
+      tx.update(docRef, {
+        'playerIds': newPlayerIds,
+        'players': newPlayers,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
     });
-    return doc.id;
+
+    return roomId;
   }
 
   // --- Quitter une salle ---
   Future<void> leaveRoom(String roomId) async {
+    final user = _requireUser();
     final doc = await _rooms.doc(roomId).get();
     if (!doc.exists) return;
     final room = OnlineRoom.fromFirestore(doc);
-    final playerData = room.players.where((p) => p.uid == _uid).toList();
+    final playerData = room.players.where((p) => p.uid == user.uid).toList();
     if (playerData.isEmpty) return;
 
-    final newPlayerIds = room.playerIds.where((id) => id != _uid).toList();
-    final newPlayers = room.players.where((p) => p.uid != _uid).toList();
+    final newPlayerIds = room.playerIds.where((id) => id != user.uid).toList();
+    final newPlayers = room.players.where((p) => p.uid != user.uid).toList();
 
     if (newPlayerIds.isEmpty) {
       await _rooms.doc(roomId).delete();
@@ -102,7 +122,7 @@ class OnlineGameRepository {
       'players': newPlayers.map((p) => p.toMap()).toList(),
       'updatedAt': FieldValue.serverTimestamp(),
     };
-    if (room.hostId == _uid) {
+    if (room.hostId == user.uid) {
       update['hostId'] = newPlayerIds.first;
       final newPlayers2 = newPlayers.map((p) {
         if (p.uid == newPlayerIds.first) {
@@ -119,30 +139,45 @@ class OnlineGameRepository {
   }
 
   // --- Prêt/Pas prêt ---
+  // Fix #5 — wrap in a transaction to avoid TOCTOU races.
   Future<void> setReady(String roomId, bool isReady) async {
-    final doc = await _rooms.doc(roomId).get();
-    final room = OnlineRoom.fromFirestore(doc);
-    final updatedPlayers = room.players.map((p) {
-      if (p.uid == _uid) {
-        return OnlinePlayer(
-          uid: p.uid, pseudo: p.pseudo, avatarColor: p.avatarColor,
-          isReady: isReady, isHost: p.isHost,
-        );
-      }
-      return p;
-    }).toList();
-    await _rooms.doc(roomId).update({
-      'players': updatedPlayers.map((p) => p.toMap()).toList(),
-      'updatedAt': FieldValue.serverTimestamp(),
+    final user = _requireUser();
+    final docRef = _rooms.doc(roomId);
+
+    await _firestore.runTransaction((tx) async {
+      final snap = await tx.get(docRef);
+      final room = OnlineRoom.fromFirestore(snap);
+
+      final updatedPlayers = room.players.map((p) {
+        if (p.uid == user.uid) {
+          return OnlinePlayer(
+            uid: p.uid, pseudo: p.pseudo, avatarColor: p.avatarColor,
+            isReady: isReady, isHost: p.isHost,
+          );
+        }
+        return p;
+      }).toList();
+
+      tx.update(docRef, {
+        'players': updatedPlayers.map((p) => p.toMap()).toList(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
     });
   }
 
   // --- Démarrer la partie (hôte seulement) ---
+  // Fix #2 — use a WriteBatch so all hand writes + status update are atomic.
+  // Fix #6 — host guard: only the room host may call startGame.
   // TODO Phase 3 Cloud Functions: la validation que seul l'hôte peut démarrer
   // sera déplacée côté serveur.
   Future<void> startGame(String roomId, List<Famille> familles) async {
+    final user = _requireUser();
+
     final doc = await _rooms.doc(roomId).get();
     final room = OnlineRoom.fromFirestore(doc);
+
+    // Fix #6 — host guard
+    if (room.hostId != user.uid) throw Exception('notHost');
 
     final playerNames = room.playerIds.map((uid) {
       final p = room.players.firstWhere((p) => p.uid == uid);
@@ -151,7 +186,10 @@ class OnlineGameRepository {
 
     final gameState = _engine.initGame(playerNames, familles);
 
+    final batch = _firestore.batch();
+
     // Écrire game/state
+    final gsRef = _rooms.doc(roomId).collection('game').doc('state');
     final gsMap = <String, dynamic>{
       'currentPlayerIndex': gameState.indexJoueurActif,
       'etape': 'transition',
@@ -161,23 +199,26 @@ class OnlineGameRepository {
         room.playerIds[i]: 0},
       'updatedAt': FieldValue.serverTimestamp(),
     };
-    await _rooms.doc(roomId).collection('game').doc('state').set(gsMap);
+    batch.set(gsRef, gsMap);
 
     // Écrire les mains
     for (int i = 0; i < room.playerIds.length; i++) {
       final uid = room.playerIds[i];
       final joueur = gameState.joueurs[i];
-      await _rooms.doc(roomId).collection('hands').doc(uid).set({
+      final handRef = _rooms.doc(roomId).collection('hands').doc(uid);
+      batch.set(handRef, {
         'personnageIds': joueur.main.map((p) => p.id).toList(),
         'updatedAt': FieldValue.serverTimestamp(),
       });
     }
 
     // Passer status à playing
-    await _rooms.doc(roomId).update({
+    batch.update(_rooms.doc(roomId), {
       'status': RoomStatus.playing.name,
       'updatedAt': FieldValue.serverTimestamp(),
     });
+
+    await batch.commit();
   }
 
   // --- Soumettre un move ---
@@ -191,9 +232,10 @@ class OnlineGameRepository {
     String familyId,
     String descripteurId,
   ) async {
+    _requireUser();
     await _rooms.doc(roomId).collection('game').doc('state').update({
       'lastAction': {
-        'requesterId': _uid,
+        'requesterId': _auth.currentUser!.uid,
         'targetId': targetId,
         'familyId': familyId,
         'descripteurId': descripteurId,
@@ -206,6 +248,7 @@ class OnlineGameRepository {
   }
 
   // --- Résoudre un move (appelé par l'hôte) ---
+  // Fix #3 — use a WriteBatch so gameState + both hand updates are atomic.
   // TODO Phase 3 Cloud Functions: cette méthode sera supprimée et remplacée
   // par la CF qui exécutera la même logique côté serveur avec accès complet.
   Future<void> resolveMove({
@@ -218,6 +261,8 @@ class OnlineGameRepository {
     required String descripteurId,
     required List<String> requesterPlayerIds,
   }) async {
+    _requireUser();
+
     final requesterJoueurId = localGameState.joueurs[
         requesterPlayerIds.indexOf(requesterId)].id;
     final targetJoueurId = localGameState.joueurs[
@@ -256,33 +301,46 @@ class OnlineGameRepository {
       newScores[requesterPlayerIds[i]] = newState.joueurs[i].famillesGagnees.length;
     }
 
-    // Mettre à jour les mains des joueurs concernés
     final requesterJoueur = newState.joueurs[requesterPlayerIds.indexOf(requesterId)];
     final targetJoueur = newState.joueurs[requesterPlayerIds.indexOf(targetId)];
-    await _rooms.doc(roomId).collection('hands').doc(requesterId).update({
-      'personnageIds': requesterJoueur.main.map((p) => p.id).toList(),
-      'updatedAt': FieldValue.serverTimestamp(),
-    });
-    await _rooms.doc(roomId).collection('hands').doc(targetId).update({
-      'personnageIds': targetJoueur.main.map((p) => p.id).toList(),
-      'updatedAt': FieldValue.serverTimestamp(),
-    });
 
-    await _rooms.doc(roomId).collection('game').doc('state').update({
-      'currentPlayerIndex': newState.indexJoueurActif,
-      'etape': isTerminee ? 'terminee' : (lastResult.succes ? 'en_cours' : 'transition'),
-      'scores': newScores,
-      'lastAction': {
-        'requesterId': requesterId,
-        'targetId': targetId,
-        'familyId': familyId,
-        'descripteurId': descripteurId,
-        'success': lastResult.succes,
-        'cardTransferedId': lastResult.carteTransferee?.id,
-        'familyCompletedId': lastResult.famillePoseeId,
+    // Fix #3 — atomic batch: both hand updates + gameState update in one commit.
+    final batch = _firestore.batch();
+
+    batch.update(
+      _rooms.doc(roomId).collection('hands').doc(requesterId),
+      {
+        'personnageIds': requesterJoueur.main.map((p) => p.id).toList(),
+        'updatedAt': FieldValue.serverTimestamp(),
       },
-      'updatedAt': FieldValue.serverTimestamp(),
-    });
+    );
+    batch.update(
+      _rooms.doc(roomId).collection('hands').doc(targetId),
+      {
+        'personnageIds': targetJoueur.main.map((p) => p.id).toList(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      },
+    );
+    batch.update(
+      _rooms.doc(roomId).collection('game').doc('state'),
+      {
+        'currentPlayerIndex': newState.indexJoueurActif,
+        'etape': isTerminee ? 'terminee' : (lastResult.succes ? 'en_cours' : 'transition'),
+        'scores': newScores,
+        'lastAction': {
+          'requesterId': requesterId,
+          'targetId': targetId,
+          'familyId': familyId,
+          'descripteurId': descripteurId,
+          'success': lastResult.succes,
+          'cardTransferedId': lastResult.carteTransferee?.id,
+          'familyCompletedId': lastResult.famillePoseeId,
+        },
+        'updatedAt': FieldValue.serverTimestamp(),
+      },
+    );
+
+    await batch.commit();
   }
 
   // --- Streams ---
@@ -302,7 +360,8 @@ class OnlineGameRepository {
   }
 
   Stream<List<String>> myHandStream(String roomId) {
-    return _rooms.doc(roomId).collection('hands').doc(_uid)
+    final user = _requireUser();
+    return _rooms.doc(roomId).collection('hands').doc(user.uid)
         .snapshots().map((snap) {
       if (!snap.exists) return [];
       final data = snap.data()!;
