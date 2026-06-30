@@ -170,7 +170,7 @@ class OnlineGameRepository {
   // Fix #6 — host guard: only the room host may call startGame.
   // TODO Phase 3 Cloud Functions: la validation que seul l'hôte peut démarrer
   // sera déplacée côté serveur.
-  Future<void> startGame(String roomId, List<Famille> familles) async {
+  Future<GameState> startGame(String roomId, List<Famille> familles) async {
     final user = _requireUser();
 
     final doc = await _rooms.doc(roomId).get();
@@ -219,6 +219,7 @@ class OnlineGameRepository {
     });
 
     await batch.commit();
+    return gameState;
   }
 
   // --- Soumettre un move ---
