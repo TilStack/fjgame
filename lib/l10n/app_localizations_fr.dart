@@ -311,4 +311,34 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get closeCard => 'Appuie pour fermer';
+
+  @override
+  String get onlineSubtitle => 'Jouez avec vos amis où que vous soyez';
+
+  @override
+  String get createRoomHint => 'Créez une salle et partagez le code';
+
+  @override
+  String get joinRoomHint => 'Entrez le code reçu par un ami';
+
+  @override
+  String get roomCode => 'Code de la partie';
+
+  @override
+  String get roomFull => 'Cette salle est complète';
+
+  @override
+  String get roomNotFound => 'Code invalide ou salle introuvable';
+
+  @override
+  String get gameAlreadyStarted => 'Cette partie a déjà commencé';
+
+  @override
+  String get createRoom => 'Créer';
+
+  @override
+  String get joinRoom => 'Rejoindre';
+
+  @override
+  String get leaveRoom => 'Quitter la salle';
 }

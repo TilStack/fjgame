@@ -673,6 +673,66 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Appuie pour fermer'**
   String get closeCard;
+
+  /// No description provided for @onlineSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Jouez avec vos amis où que vous soyez'**
+  String get onlineSubtitle;
+
+  /// No description provided for @createRoomHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créez une salle et partagez le code'**
+  String get createRoomHint;
+
+  /// No description provided for @joinRoomHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Entrez le code reçu par un ami'**
+  String get joinRoomHint;
+
+  /// No description provided for @roomCode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code de la partie'**
+  String get roomCode;
+
+  /// No description provided for @roomFull.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette salle est complète'**
+  String get roomFull;
+
+  /// No description provided for @roomNotFound.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code invalide ou salle introuvable'**
+  String get roomNotFound;
+
+  /// No description provided for @gameAlreadyStarted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette partie a déjà commencé'**
+  String get gameAlreadyStarted;
+
+  /// No description provided for @createRoom.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer'**
+  String get createRoom;
+
+  /// No description provided for @joinRoom.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rejoindre'**
+  String get joinRoom;
+
+  /// No description provided for @leaveRoom.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter la salle'**
+  String get leaveRoom;
 }
 
 class _AppLocalizationsDelegate
